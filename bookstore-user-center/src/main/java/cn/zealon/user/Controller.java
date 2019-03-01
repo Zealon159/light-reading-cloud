@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("test")
+@RequestMapping("user")
 public class Controller {
     /**
      * 注入发现客户端
@@ -21,9 +21,9 @@ public class Controller {
     @Autowired
     private DiscoveryClient client;
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    @RequestMapping(value = "/get-info", method = RequestMethod.GET)
     public String hello(){
 
-        return "hello";
+        return "admin,hello";
     }
 }
