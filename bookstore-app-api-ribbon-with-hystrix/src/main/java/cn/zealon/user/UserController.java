@@ -1,5 +1,6 @@
 package cn.zealon.user;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,20 +17,14 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class UserController {
 
-    /**
-     * 注入restTemplate
-     */
     @Autowired
-    private RestTemplate restTemplate;
+    private UserService userService;
 
     @RequestMapping(value="/say-hello/{userName}", method=RequestMethod.GET)
     public String helloCustomer(@PathVariable String userName){
-
-        System.out.println("使用restTemplate调用微服务接口");
-
-        // 使用restTemplate调用微服务接口
-        String url = "http://user-service/user-center/user/hello/"+userName;
-        return restTemplate.getForEntity(url, String.class).getBody();
+        return this.userService.sayHello(userName);
 
     }
+
+
 }

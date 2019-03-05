@@ -1,20 +1,17 @@
 package cn.zealon.user;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author: tangyl
- * @Date: 2019/3/1
+ * @Date: 2019/3/4
  * @Version: 1.0
  */
-@RequestMapping("/user")
-@RestController
-public class UserController {
+@Service
+public class UserService {
 
     /**
      * 注入restTemplate
@@ -22,14 +19,20 @@ public class UserController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping(value="/say-hello/{userName}", method=RequestMethod.GET)
-    public String helloCustomer(@PathVariable String userName){
+    public String fallback(String userName){
 
+        System.out.println("业务服务异常，进入快速失败！");
+        return userName+"，业务服务异常，进入快速失败！";
+    }
+
+    @HystrixCommand(fallbackMethod = "fallback")
+    public String sayHello(String userName){
         System.out.println("使用restTemplate调用微服务接口");
+        int a = Integer.parseInt(userName+9);
+        System.out.println(a);
 
         // 使用restTemplate调用微服务接口
         String url = "http://user-service/user-center/user/hello/"+userName;
         return restTemplate.getForEntity(url, String.class).getBody();
-
     }
 }
