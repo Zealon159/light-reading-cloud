@@ -1,4 +1,4 @@
-package cn.zealon.user;
+package cn.zealon.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @Author: tangyl
  * @Date: 2019/2/27
  * @Version: 1.0
- */
+
 @RestController
-@RequestMapping("user")
+@RequestMapping("user1")
 public class Controller {
-    /**
-     * 注入发现客户端
-     */
-    @Autowired
-    private DiscoveryClient client;
 
     @RequestMapping(value = "/get-info", method = RequestMethod.GET)
     public String hello(){
@@ -27,3 +22,4 @@ public class Controller {
         return "admin,hello";
     }
 }
+ */

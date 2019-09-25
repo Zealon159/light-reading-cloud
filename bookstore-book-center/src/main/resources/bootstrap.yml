@@ -1,13 +1,31 @@
 spring:
   application:
-    name: book-server                     #指定了配置文件的应用名
-  cloud:
-    config:
-      uri: http://localhost:8888/        #Config server的uri
-      profile: dev                       #指定的环境
-      label: master                      #指定分支
+    name: bookstore-book-center
 server:
   port: 8001
-management:
-  security:
-    enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1001/eureka/
+
+feign:
+  compression:
+    request:
+      enabled: true
+      mime-type: text/html,application/xml,application/json
+      min-request-size: 1024
+    response:
+      enabled: true
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 20 #并发执行的最大线程数，默认10
+      maxQueueSize: 1000 #BlockingQueue的最大队列数，默认值-1
+      queueSizeRejectionThreshold: 400
+
+
+from: dev-environment-1.0...
+
+
