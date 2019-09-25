@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since: 2019/9/25
  */
 @FeignClient(contextId = "book-chapter",name = "bookstore-book-center", fallbackFactory = BookChapterFeignClientFallback.class
-        ,configuration = BookChapterHystrixCommandConfig.class)
+       ,configuration = BookChapterHystrixCommandConfig.class)
 public interface BookChapterFeignClient {
 
     @RequestMapping("book/chapter/getChapterContent")

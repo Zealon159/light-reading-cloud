@@ -1,10 +1,7 @@
 package cn.zealon.bookstore.app.api.feign.config;
 
 import cn.zealon.bookstore.app.api.feign.BookFeignClient;
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.netflix.hystrix.HystrixCommandProperties;
-import com.netflix.hystrix.HystrixThreadPoolProperties;
+import com.netflix.hystrix.*;
 import feign.Feign;
 import feign.hystrix.HystrixFeign;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +15,11 @@ import org.springframework.context.annotation.Configuration;
 public class BookHystrixCommandConfig {
 
     @Bean
-    public Feign.Builder feignHystrixBuilder() {
+    public Feign.Builder bookFeignHystrixBuilder() {
         return HystrixFeign.builder().setterFactory((target, method) -> HystrixCommand.Setter
                 // 组
                 .withGroupKey(HystrixCommandGroupKey.Factory.asKey(BookFeignClient.class.getSimpleName()))
+                .andCommandKey(HystrixCommandKey.Factory.asKey(BookFeignClient.class.getSimpleName()))
                 .andCommandPropertiesDefaults(
                     // 超时配置
                     HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(500)
