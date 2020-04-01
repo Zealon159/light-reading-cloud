@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zealon.bookstore.bookcenter.dao.BookMapper">
+
+    <resultMap id="BaseResultMap" type="cn.zealon.bookstore.common.pojo.book.Book">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="author_id" jdbcType="INTEGER" property="authorId" />
+        <result column="dic_category" jdbcType="INTEGER" property="dicCategory" />
+        <result column="dic_channel" jdbcType="INTEGER" property="dicChannel" />
+        <result column="dic_serial_status" jdbcType="INTEGER" property="dicSerialStatus" />
+        <result column="online_status" jdbcType="BIT" property="onlineStatus" />
+        <result column="book_id" jdbcType="VARCHAR" property="bookId" />
+        <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+        <result column="book_score" jdbcType="INTEGER" property="bookScore" />
+        <result column="key_word" jdbcType="VARCHAR" property="keyWord" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="author_name" jdbcType="VARCHAR" property="authorName" />
+        <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+        <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+        <result column="word_count" jdbcType="INTEGER" property="wordCount" />
+        <result column="creater" jdbcType="VARCHAR" property="creater" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="updater" jdbcType="VARCHAR" property="updater" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, author_id, dic_category, dic_channel, dic_serial_status, online_status, book_id,
+      book_name, book_score, key_word, img_url, author_name, introduction, isbn, word_count,
+      creater, create_time, update_time, updater
+    </sql>
+
+    <select id="selectByBookId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  book
+        where book_id = #{bookId}
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  book
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="authorId != null" >
+                and author_id = #{authorId,jdbcType=INTEGER}
+            </if>
+            <if test="dicCategory != null" >
+                and dic_category = #{dicCategory,jdbcType=INTEGER}
+            </if>
+            <if test="dicChannel != null" >
+                and dic_channel = #{dicChannel,jdbcType=INTEGER}
+            </if>
+            <if test="dicSerialStatus != null" >
+                and dic_serial_status = #{dicSerialStatus,jdbcType=INTEGER}
+            </if>
+            <if test="onlineStatus != null" >
+                and online_status = #{onlineStatus,jdbcType=BIT}
+            </if>
+            <if test="bookId != null and bookId != ''" >
+                and book_id = #{bookId,jdbcType=VARCHAR}
+            </if>
+            <if test="bookName != null and bookName != ''" >
+                and (book_name like concat('%',#{bookName,jdbcType=VARCHAR},'%')
+                 or book_id like concat('%',#{bookName,jdbcType=VARCHAR},'%')
+                )
+            </if>
+        </where>
+    </sql>
+
+    <select id="findPageWithResult" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  book
+        <include refid="findPageWithWhere" />
+        order by create_time desc
+    </select>
+
+    <select id="findPageWithCount" resultType="Integer">
+        select count(1)
+        from book
+        <include refid="findPageWithWhere" />
+    </select>
+
+</mapper>
