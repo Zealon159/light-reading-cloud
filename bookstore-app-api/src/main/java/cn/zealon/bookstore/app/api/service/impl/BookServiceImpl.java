@@ -3,8 +3,7 @@ package cn.zealon.bookstore.app.api.service.impl;
 import cn.zealon.bookstore.app.api.feign.BookFeignClient;
 import cn.zealon.bookstore.app.api.service.BookService;
 import cn.zealon.bookstore.app.api.vo.BookVO;
-import cn.zealon.bookstore.bookcenter.feign.client.BookClient;
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookVO getBookDetailsById(String bookId) {
-        //NomalBook nomalBook = bookClient.getBookById(bookId);
-        NomalBook bookById = bookClient.getBookById(bookId);
+        //Book nomalBook = bookClient.getBookById(bookId);
+        Book bookById = bookClient.getBookById(bookId);
         System.out.println(bookById.getBookName());
 
         BookVO bookVO = new BookVO();
@@ -35,7 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public NomalBook getBookById(String bookId) {
+    public Book getBookById(String bookId) {
         return bookClient.getBookById(bookId);
     }
 
@@ -47,8 +46,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<NomalBook> getBookList2() {
-        List<NomalBook> bookList2 = bookClient.getBookList2();
+    public List<Book> getBookList2() {
+        List<Book> bookList2 = bookClient.getBookList2();
         byte[] bytes = bookList2.toString().getBytes();
         System.out.println(bytes.length);
         return bookList2;

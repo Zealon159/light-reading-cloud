@@ -1,13 +1,19 @@
 spring:
   application:
+    # 服务逻辑名称
     name: bookstore-book-center
 server:
   port: 8001
 
 eureka:
+  instance:
+    # 注册服务的IP，而不是逻辑名称
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://localhost:1001/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 
 feign:
   compression:

@@ -1,6 +1,6 @@
 package cn.zealon.bookstore.bookcenter.service;
 
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface BookService {
      * @param bookId
      * @return
      */
-    NomalBook getBookById(String bookId);
+    Book getBookById(String bookId);
 
-    List<NomalBook> getBookList();
+    List<Book> getBookList();
 }

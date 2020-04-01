@@ -2,7 +2,7 @@ package cn.zealon.bookstore.app.api.controller;
 
 import cn.zealon.bookstore.app.api.service.BookService;
 import cn.zealon.bookstore.app.api.vo.BookVO;
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class BookController {
     })
     @ApiResponses({@ApiResponse(code = 0, message = "", response = BookVO.class)})
     @GetMapping("/getBookById")
-    public NomalBook getBookById(String bookId){
+    public Book getBookById(String bookId){
         System.out.println("controller currentThread:"+Thread.currentThread().getName());
         return bookService.getBookById(bookId);
     }
@@ -56,7 +56,7 @@ public class BookController {
     @ApiOperation(value = "查询图书列表2")
     @ApiResponses({@ApiResponse(code = 0, message = "", response = BookVO.class)})
     @GetMapping("/getBookList2")
-    public List<NomalBook> getBookList2(){
+    public List<Book> getBookList2(){
         return bookService.getBookList2();
     }
 }

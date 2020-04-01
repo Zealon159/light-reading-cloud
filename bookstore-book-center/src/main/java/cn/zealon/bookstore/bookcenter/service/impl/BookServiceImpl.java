@@ -1,7 +1,7 @@
 package cn.zealon.bookstore.bookcenter.service.impl;
 
 import cn.zealon.bookstore.bookcenter.service.BookService;
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ import java.util.Random;
 public class BookServiceImpl implements BookService {
 
     @Override
-    public NomalBook getBookById(String bookId) {
+    public Book getBookById(String bookId) {
         Random random = new Random();
         int index = random.nextInt(100);
-        NomalBook book = new NomalBook();
+        Book book = new Book();
         book.setBookId(bookId);
         book.setBookName("冰与火之歌"+index);
         book.setAuthorPenname("马丁");
@@ -36,10 +36,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<NomalBook> getBookList() {
-        List<NomalBook> list = new ArrayList<>(5000);
+    public List<Book> getBookList() {
+        List<Book> list = new ArrayList<>(5000);
         for (int i = 0; i < 1000; i++) {
-            NomalBook book = this.getBookById(String.valueOf(i));
+            Book book = this.getBookById(String.valueOf(i));
             list.add(book);
         }
         return list;

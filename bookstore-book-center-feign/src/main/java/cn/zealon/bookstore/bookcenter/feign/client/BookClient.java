@@ -1,6 +1,6 @@
 package cn.zealon.bookstore.bookcenter.feign.client;
 
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import feign.hystrix.FallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ import java.util.List;
 public interface BookClient {
 
     @RequestMapping("/book/getBookById")
-    NomalBook getBookById(@RequestParam("bookId") String bookId);
+    Book getBookById(@RequestParam("bookId") String bookId);
    // ResponseEntity<byte[]> getBookById(@RequestParam("bookId") String bookId);
 
     @RequestMapping("/book/getBookList")
     ResponseEntity<byte[]> getBookList();
 
     @RequestMapping("/book/getBookList")
-    List<NomalBook> getBookList2();
+    List<Book> getBookList2();
 
 }
 
@@ -37,9 +37,9 @@ class BookClientFallBack implements FallbackFactory<BookClient> {
     public BookClient create(Throwable cause) {
         return new BookClient() {
             @Override
-            public NomalBook getBookById(String bookId) {
+            public Book getBookById(String bookId) {
                 System.out.println(cause.getMessage());
-                NomalBook book = new NomalBook();
+                Book book = new Book();
                 book.setBookName("Default Book.");
                 book.setBookId("0");
                 return book;
@@ -51,7 +51,7 @@ class BookClientFallBack implements FallbackFactory<BookClient> {
             }
 
             @Override
-            public List<NomalBook> getBookList2() {
+            public List<Book> getBookList2() {
                 return null;
             }
         };

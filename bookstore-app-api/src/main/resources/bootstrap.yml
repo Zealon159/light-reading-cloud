@@ -26,26 +26,6 @@ feign:
     response:
       enabled: true
 
-hystrix:
-  threadpool:
-    default:
-      allowMaximumSizeToDivergeFromCoreSize: true
-      coreSize: 10
-      maximumSize: 50
-      maxQueueSize: 1500
-      queueSizeRejectionThreshold: 1000
-  command:
-    default:
-      execution:
-        timeout:
-          enabled: true #使用线程隔离时，当命令超时时是否对命令所在线程执行中断操作，默认为true
-        isolation:
-          strategy: THREAD # 线程分隔
-        semaphore:
-          maxConcurrentRequests: 15 #线程数
-        thread:
-          timeoutInMilliseconds: 2000 #最大超时时间:3秒(单位毫秒)
-
 logging:
   level:
     cn:

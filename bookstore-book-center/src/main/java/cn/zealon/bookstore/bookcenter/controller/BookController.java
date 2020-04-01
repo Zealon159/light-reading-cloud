@@ -1,7 +1,7 @@
 package cn.zealon.bookstore.bookcenter.controller;
 
 import cn.zealon.bookstore.bookcenter.service.BookService;
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +25,14 @@ public class BookController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", dataType = "String")
     })
-    @ApiResponses({@ApiResponse(code = 610, message = "", response = NomalBook.class)})
+    @ApiResponses({@ApiResponse(code = 610, message = "", response = Book.class)})
     @RequestMapping("/getBookById")
-    public NomalBook getBookById(String bookId){
+    public Book getBookById(String bookId){
         return bookService.getBookById(bookId);
     }
 
     @RequestMapping("/getBookList")
-    public List<NomalBook> getBookList(){
+    public List<Book> getBookList(){
         return bookService.getBookList();
     }
 }

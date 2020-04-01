@@ -1,7 +1,7 @@
 package cn.zealon.bookstore.app.api.service;
 
 import cn.zealon.bookstore.app.api.vo.BookVO;
-import cn.zealon.bookstore.common.model.NomalBook;
+import cn.zealon.bookstore.common.pojo.book.Book;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public interface BookService {
      */
     BookVO getBookDetailsById(String bookId);
 
-    NomalBook getBookById(String bookId);
+    Book getBookById(String bookId);
 
     ResponseEntity<byte[]> getBookList();
 
-    List<NomalBook> getBookList2();
+    List<Book> getBookList2();
 }
