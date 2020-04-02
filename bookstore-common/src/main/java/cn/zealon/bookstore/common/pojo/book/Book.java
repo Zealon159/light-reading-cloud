@@ -1,7 +1,6 @@
 package cn.zealon.bookstore.common.pojo.book;
 
 import lombok.Data;
-import lombok.extern.log4j.Log4j;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,7 +8,6 @@ import java.util.Date;
  * 图书
  */
 @Data
-@Log4j
 public class Book implements Serializable {
 
     private Integer id;

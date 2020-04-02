@@ -1,7 +1,11 @@
 package cn.zealon.bookstore.bookcenter.service.impl;
 
+import cn.zealon.bookstore.bookcenter.dao.BookMapper;
 import cn.zealon.bookstore.bookcenter.service.BookService;
+import cn.zealon.bookstore.common.cache.RedisConstant;
+import cn.zealon.bookstore.common.cache.RedisService;
 import cn.zealon.bookstore.common.pojo.book.Book;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,21 +20,21 @@ import java.util.Random;
 @Service
 public class BookServiceImpl implements BookService {
 
+    @Autowired
+    private BookMapper bookMapper;
+
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public Book getBookById(String bookId) {
-        Random random = new Random();
-        int index = random.nextInt(100);
-        Book book = new Book();
-        book.setBookId(bookId);
-        book.setBookName("冰与火之歌"+index);
-        book.setAuthorPenname("马丁");
-        // 模拟超时，进行随机睡眠
-        int s = random.nextInt(1100);
-        try {
-            System.out.println("睡眠:"+s);
-            Thread.sleep(s);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        String key = RedisConstant.Book.getBookDetail(bookId);
+        Book book = this.redisService.getCache(key, Book.class);
+        if (null == book) {
+            book = this.bookMapper.selectByBookId(bookId);
+            if (null != book) {
+                this.redisService.setExpireCache(key, book, RedisConstant.Expire.MINUTE_THIRTY);
+            }
         }
         return book;
     }

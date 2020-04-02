@@ -23,7 +23,6 @@ public class SwaggerConfig {
 
     /**
      * swagger生成
-     *
      * @return Docket
      */
     @Bean
