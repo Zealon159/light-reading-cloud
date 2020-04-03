@@ -2,6 +2,7 @@ package cn.zealon.bookstore.app.api.service;
 
 import cn.zealon.bookstore.app.api.vo.BookVO;
 import cn.zealon.bookstore.common.pojo.book.Book;
+import cn.zealon.bookstore.common.result.Result;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface BookService {
      */
     BookVO getBookDetailsById(String bookId);
 
-    Book getBookById(String bookId);
+    Result getBookById(String bookId);
 
     ResponseEntity<byte[]> getBookList();
 

@@ -1,6 +1,5 @@
 package cn.zealon.bookstore.app.api.feign.config;
 
-import cn.zealon.bookstore.app.api.feign.BookChapterFeignClient;
 import com.netflix.hystrix.*;
 import feign.Feign;
 import feign.hystrix.HystrixFeign;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author: tangyl
  * @since: 2019/9/25
- */
+
 @Configuration
 public class BookChapterHystrixCommandConfig {
 
@@ -28,9 +27,9 @@ public class BookChapterHystrixCommandConfig {
 
                 )
                 .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter()
-
                         .withCoreSize(3)
                         .withMaxQueueSize(333)
                 ));
     }
 }
+ */

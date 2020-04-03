@@ -5,6 +5,8 @@ import cn.zealon.bookstore.bookcenter.service.BookService;
 import cn.zealon.bookstore.common.cache.RedisConstant;
 import cn.zealon.bookstore.common.cache.RedisService;
 import cn.zealon.bookstore.common.pojo.book.Book;
+import cn.zealon.bookstore.common.result.Result;
+import cn.zealon.bookstore.common.result.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +29,8 @@ public class BookServiceImpl implements BookService {
     private RedisService redisService;
 
     @Override
-    public Book getBookById(String bookId) {
-        String key = RedisConstant.Book.getBookDetail(bookId);
+    public Result getBookById(String bookId) {
+        String key = RedisConstant.Book.getBookKey(bookId);
         Book book = this.redisService.getCache(key, Book.class);
         if (null == book) {
             book = this.bookMapper.selectByBookId(bookId);
@@ -36,16 +38,7 @@ public class BookServiceImpl implements BookService {
                 this.redisService.setExpireCache(key, book, RedisConstant.Expire.MINUTE_THIRTY);
             }
         }
-        return book;
+        return ResultUtil.success(book);
     }
 
-    @Override
-    public List<Book> getBookList() {
-        List<Book> list = new ArrayList<>(5000);
-        for (int i = 0; i < 1000; i++) {
-            Book book = this.getBookById(String.valueOf(i));
-            list.add(book);
-        }
-        return list;
-    }
 }

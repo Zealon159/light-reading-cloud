@@ -1,36 +1,45 @@
 package cn.zealon.bookstore.bookcenter.service.impl;
 
+import cn.zealon.bookstore.bookcenter.dao.BookChapterMapper;
 import cn.zealon.bookstore.bookcenter.service.BookChapterService;
+import cn.zealon.bookstore.bookcenter.service.BookService;
+import cn.zealon.bookstore.common.pojo.book.Book;
+import cn.zealon.bookstore.common.pojo.book.BookChapter;
+import cn.zealon.bookstore.common.result.Result;
+import cn.zealon.bookstore.common.result.ResultUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 /**
  * 图书章节服务
- * @author: tangyl
+ * @author: zealon
  * @since: 2019/9/25
  */
 @Service
 public class BookChapterServiceImpl implements BookChapterService {
 
+    @Autowired
+    private BookChapterMapper bookChapterMapper;
+
+    @Autowired
+    private BookService bookService;
+
     @Override
-    public String getChapterContent(String bookId, String chapterId) {
-        System.out.println(System.currentTimeMillis());
-        String content = "";
-        String[] words = {"唐代诗人，","李白，","朝辞白帝彩云间，","遥看瀑布挂前川，","飞流直下三千尺，","疑是银河落九天。"};
-        Random random = new Random();
-        for (int i = 0; i < words.length; i++) {
-            int index = random.nextInt(words.length);
-            content += words[index];
+    public Result getBookChapterListByBookId(String bookId) {
+        Book book = (Book) bookService.getBookById(bookId).getData();
+        if (book == null || !book.getOnlineStatus()) {
+            ResultUtil.success(null);
         }
-        if (bookId.equals("0")){
-            try {
-                Thread.sleep(750);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(System.currentTimeMillis());
-        return content;
+        List<BookChapter> chapters = null;
+        chapters = this.bookChapterMapper.findPageWithResult(book.getId());
+        return ResultUtil.success(chapters);
+    }
+
+    @Override
+    public Result getChapterById(Integer chapterId) {
+        BookChapter chapter = null;
+        chapter = this.bookChapterMapper.selectById(chapterId);
+        return ResultUtil.success(chapter);
     }
 }

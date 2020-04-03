@@ -42,8 +42,19 @@ public class RedisConstant {
     }
 
     public static final class Book {
-        public static final String getBookDetail(String bookId){
-            return String.format("book:detail_%s",bookId);
+        /** 资源中心图书缓存 */
+        public static final String getBookKey(String bookId){
+            return String.format("book-center:detail_%s",bookId);
+        }
+
+        /** 资源中心图书章节缓存 */
+        public static final String getBookChapterKey(String bookId){
+            return String.format("book-center:chapter_%s",bookId);
+        }
+
+        /** 资源中心图书章节列表缓存 */
+        public static final String getBookChapterListKey(String bookId){
+            return String.format("book-center:chapter_list_%s",bookId);
         }
     }
 

@@ -1,13 +1,15 @@
 package cn.zealon.bookstore.app.api.service.impl;
 
-import cn.zealon.bookstore.app.api.feign.BookFeignClient;
 import cn.zealon.bookstore.app.api.service.BookService;
 import cn.zealon.bookstore.app.api.vo.BookVO;
 import cn.zealon.bookstore.common.pojo.book.Book;
+import cn.zealon.bookstore.common.result.Result;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import cn.zealon.bookstore.bookcenter.feign.client.BookClient;
 import java.util.List;
 
 /**
@@ -19,22 +21,16 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    private BookFeignClient bookClient;
+    private BookClient bookClient;
 
     @Override
     public BookVO getBookDetailsById(String bookId) {
-        //Book nomalBook = bookClient.getBookById(bookId);
-        Book bookById = bookClient.getBookById(bookId);
-        System.out.println(bookById.getBookName());
-
         BookVO bookVO = new BookVO();
-        //BeanUtils.copyProperties(nomalBook,bookVO);
-
         return bookVO;
     }
 
     @Override
-    public Book getBookById(String bookId) {
+    public Result getBookById(String bookId) {
         return bookClient.getBookById(bookId);
     }
 

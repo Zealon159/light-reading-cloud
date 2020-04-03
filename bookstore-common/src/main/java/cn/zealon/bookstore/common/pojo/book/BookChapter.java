@@ -2,6 +2,8 @@ package cn.zealon.bookstore.common.pojo.book;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 章节
  * @author: zealon
@@ -37,4 +39,8 @@ public class BookChapter {
      * 排序
      */
     private Integer sortNumber;
+
+    private Date createTime;
+
+    private Date updateTime;
 }

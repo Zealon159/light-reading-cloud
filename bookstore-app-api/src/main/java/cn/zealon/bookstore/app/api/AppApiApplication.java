@@ -12,12 +12,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@EnableFeignClients(basePackages = {"cn.zealon.bookstore.app.api.feign"})
+@EnableFeignClients(basePackages = {"cn.zealon.bookstore.bookcenter.feign.client"})
 @EnableEurekaClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages="cn.zealon.bookstore")
 @EnableHystrix
 @EnableHystrixDashboard
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppApiApplication {
 
     public static void main(String[] args) {

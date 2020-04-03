@@ -52,15 +52,6 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-feign:
-  compression:
-    request:
-      enabled: true
-      mime-type: text/html,application/xml,application/json
-      min-request-size: 1024
-    response:
-      enabled: true
-
 hystrix:
   threadpool:
     default:

@@ -3,6 +3,7 @@ package cn.zealon.bookstore.app.api.controller;
 import cn.zealon.bookstore.app.api.service.BookService;
 import cn.zealon.bookstore.app.api.vo.BookVO;
 import cn.zealon.bookstore.common.pojo.book.Book;
+import cn.zealon.bookstore.common.result.Result;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +40,9 @@ public class BookController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
     })
-    @ApiResponses({@ApiResponse(code = 0, message = "", response = BookVO.class)})
+    @ApiResponses({@ApiResponse(code = 0, message = "", response = Book.class)})
     @GetMapping("/getBookById")
-    public Book getBookById(String bookId){
+    public Result getBookById(String bookId){
         System.out.println("controller currentThread:"+Thread.currentThread().getName());
         return bookService.getBookById(bookId);
     }

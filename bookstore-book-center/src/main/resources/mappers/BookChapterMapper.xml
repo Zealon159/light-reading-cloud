@@ -9,10 +9,8 @@
         <result column="content" jdbcType="VARCHAR" property="content" />
         <result column="lock_status" jdbcType="BIT" property="lockStatus" />
         <result column="sort_number" jdbcType="INTEGER" property="sortNumber" />
-        <result column="creater" jdbcType="VARCHAR" property="creater" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="updater" jdbcType="VARCHAR" property="updater" />
     </resultMap>
 
     <sql id="Base_Column_List">

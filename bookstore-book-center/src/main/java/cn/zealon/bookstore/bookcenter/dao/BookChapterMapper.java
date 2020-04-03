@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface BookChapterMapper {
 
+    BookChapter selectById(@Param("id") Integer id);
+
     List<BookChapter> findPageWithResult(@Param("bookId") Integer bookId);
 
     int findPageWithCount(@Param("bookId") Integer bookId);
