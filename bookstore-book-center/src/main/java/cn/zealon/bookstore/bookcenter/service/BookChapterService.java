@@ -21,5 +21,5 @@ public interface BookChapterService {
      * @param chapterId
      * @return
      */
-    Result getChapterById(Integer chapterId);
+    Result getChapterById(String bookId, Integer chapterId);
 }

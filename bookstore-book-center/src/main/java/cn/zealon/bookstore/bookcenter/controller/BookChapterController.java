@@ -23,12 +23,13 @@ public class BookChapterController {
 
     @ApiOperation(value = "查询图书章节基本信息" , httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", dataType = "String")
+        @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "chapterId", value = "章节ID", dataType = "Integer")
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = BookChapter.class)})
     @RequestMapping("/getChapter")
-    public Result getChapter(Integer chapterId){
-        return bookChapterService.getChapterById(chapterId);
+    public Result getChapter(String bookId, Integer chapterId){
+        return bookChapterService.getChapterById(bookId, chapterId);
     }
 
     @ApiOperation(value = "查询图书章节列表信息" , httpMethod = "GET")
