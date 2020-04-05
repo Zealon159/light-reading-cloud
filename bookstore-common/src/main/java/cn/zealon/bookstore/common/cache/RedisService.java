@@ -51,10 +51,9 @@ public class RedisService {
         zSetOperations = stringRedisTemplate.opsForZSet();
     }
 
-    //**************公共方法***************//
+    /************************************** 公共方法 */
     /**
      * 删除缓存
-     *
      * @param key 缓存key
      * @return Boolean 成功失败
      */
@@ -68,7 +67,6 @@ public class RedisService {
 
     /**
      * 根据Key删除缓存
-     *
      * @param key 缓存key
      * @return Boolean 成功失败
      */
@@ -136,8 +134,9 @@ public class RedisService {
     public Boolean hasKey(String key) {
         return stringRedisTemplate.hasKey(key);
     }
+    /************************************** 公共方法 End */
 
-    //**************String处理（实体转化为json字符串）***************//
+    /************************************** String处理（实体转化为json字符串） */
     /**
      * 从缓存获取值
      *
@@ -216,8 +215,9 @@ public class RedisService {
         }
         valueOperations.set(key, value, time, TimeUnit.SECONDS);
     }
+    /************************************** String处理（实体转化为json字符串） End */
 
-    //**************Object处理***************//
+    /************************************** Object处理 */
     /**
      * 添加缓存
      *
@@ -254,9 +254,9 @@ public class RedisService {
         }
         this.setExpireCache(key, JSONObject.toJSONString(obj), time);
     }
+    /************************************** Object处理 End */
 
-
-    //**************List处理***************//
+    /************************************** List处理  */
     /**
      * 添加缓存
      *
@@ -374,11 +374,26 @@ public class RedisService {
         }
         return backList;
     }
+    /************************************** List处理 End */
 
-    //**************Map处理***************//
+    /************************************** Hash处理 */
+    public <T> T getHashVal(String key, String field, Class<T> c){
+        Object val = this.hashOperations.get(key, field);
+        if (val == null) {
+            return null;
+        }
+        return JSONObject.parseObject(val.toString(), c);
+    }
+
+    public void setHashValExpire(String key, String field, Object val, Long time){
+        this.hashOperations.put(key, field, JSONObject.toJSONString(val));
+        this.setExpire(key, time);
+    }
+
+    /************************************** Hash处理 End */
 
 
-    //**************zSet处理***************//
+    /************************************** zSet处理 End */
     /**
      * 批量保存到有序集合
      * @param key
@@ -459,4 +474,5 @@ public class RedisService {
         long end = pageNo * pageSize - 1;
         return zSetRange(key,start,end,c);
     }
+    /************************************** zSet处理 End */
 }
