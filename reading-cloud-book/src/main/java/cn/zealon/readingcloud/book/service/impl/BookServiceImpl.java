@@ -2,7 +2,8 @@ package cn.zealon.readingcloud.book.service.impl;
 
 import cn.zealon.readingcloud.book.dao.BookMapper;
 import cn.zealon.readingcloud.book.service.BookService;
-import cn.zealon.readingcloud.common.cache.RedisConstant;
+import cn.zealon.readingcloud.common.cache.RedisBookKey;
+import cn.zealon.readingcloud.common.cache.RedisExpire;
 import cn.zealon.readingcloud.common.cache.RedisService;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
@@ -26,12 +27,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Result getBookById(String bookId) {
-        String key = RedisConstant.Book.getBookKey(bookId);
+        String key = RedisBookKey.getBookKey(bookId);
         Book book = this.redisService.getCache(key, Book.class);
         if (null == book) {
             book = this.bookMapper.selectByBookId(bookId);
             if (null != book) {
-                this.redisService.setExpireCache(key, book, RedisConstant.Expire.MINUTE_THIRTY);
+                this.redisService.setExpireCache(key, book, RedisExpire.MINUTE_THIRTY);
             }
         }
         return ResultUtil.success(book);
