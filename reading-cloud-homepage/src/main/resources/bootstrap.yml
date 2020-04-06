@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: light-reading-cloud-homepage
+
+server:
+  port: 8002
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1001/eureka/
+
+feign:
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-type: text/html,application/xml,application/json
+      min-request-size: 1024
+    response:
+      enabled: true
+
+logging:
+  level:
+    cn:
+      zealon:
+        cn.zealon.readingcloud.book.feign.client: debug
+
+from: dev-environment-1.0...
+debug: true

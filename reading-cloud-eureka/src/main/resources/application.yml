@@ -1,0 +1,14 @@
+server:
+  port: 1001
+
+eureka:
+  instance:
+    # 提供服务的域名，本地可以使用localhost或者配置hosts测试
+    hostname: localhost
+  client:
+    # 关闭向注册中心注册自己
+    register-with-eureka: false
+    # 关闭发现注册服务，注册中心仅用于维护节点
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

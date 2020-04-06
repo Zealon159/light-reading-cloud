@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zealon.readingcloud.homepage.dao.IndexBannerItemMapper">
+
+    <resultMap id="BaseResultMap" type="cn.zealon.readingcloud.common.pojo.index.IndexBannerItem">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="banner_id" jdbcType="INTEGER" property="bannerId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="sort_number" jdbcType="INTEGER" property="sortNumber" />
+        <result column="creater" jdbcType="VARCHAR" property="creater" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="updater" jdbcType="VARCHAR" property="updater" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, banner_id, name, img_url, url, sort_number, creater, create_time, update_time,
+      updater
+    </sql>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  index_banner_item
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <sql id="findPageWithWhere">
+        <where>
+            and banner_id = #{bannerId,jdbcType=INTEGER}
+        </where>
+    </sql>
+
+    <select id="findPageWithResult" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  index_banner_item
+        <include refid="findPageWithWhere" />
+        order by sort_number
+    </select>
+</mapper>

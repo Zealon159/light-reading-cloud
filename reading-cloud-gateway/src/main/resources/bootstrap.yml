@@ -1,0 +1,39 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    # 服务逻辑名称
+    name: light-reading-cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: bookstore-book-center
+          uri: lb://bookstore-book-center
+          predicates:
+            - Path=/book/**
+
+
+
+eureka:
+  instance:
+    # 注册服务的IP，而不是逻辑名称
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:1001/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 20 #并发执行的最大线程数，默认10
+      maxQueueSize: 1000 #BlockingQueue的最大队列数，默认值-1
+      queueSizeRejectionThreshold: 400
+
+
