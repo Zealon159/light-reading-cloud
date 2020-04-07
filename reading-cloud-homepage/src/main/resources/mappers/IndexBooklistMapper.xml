@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="cn.zealon.readingcloud.common.pojo.index.IndexBooklist">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="show_number" jdbcType="INTEGER" property="showNumber" />
         <result column="style" jdbcType="INTEGER" property="style" />
         <result column="more_type" jdbcType="INTEGER" property="moreType" />
         <result column="more_url" jdbcType="VARCHAR" property="moreUrl" />
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, name, style, more_type, more_url, book_ids, start_date, end_date, creater, create_time,
+      id, name, show_number, style, more_type, more_url, book_ids, start_date, end_date, creater, create_time,
       update_time, updater
     </sql>
 

@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * 图书
- * @author: tangyl
+ * 图书中心服务
+ * @author: zealon
  * @since: 2019/7/4
  */
-public interface BookService {
+public interface BookCenterService {
 
     /**
      * 获取图书详情

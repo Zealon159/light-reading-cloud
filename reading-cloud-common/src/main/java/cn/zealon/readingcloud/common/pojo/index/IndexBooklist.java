@@ -22,6 +22,11 @@ public class IndexBooklist implements Serializable {
     private String name;
 
     /**
+     * 显示数量
+     */
+    private Integer showNumber;
+
+    /**
      * 书单样式：1.横版(2*4),2.竖版(1*3),3.1+4,4.竖版more
      */
     private Integer style;

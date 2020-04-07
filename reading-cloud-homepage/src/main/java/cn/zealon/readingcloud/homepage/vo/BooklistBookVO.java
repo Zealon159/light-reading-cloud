@@ -1,16 +1,16 @@
 package cn.zealon.readingcloud.homepage.vo;
 
 import lombok.Data;
+
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * 图书详情VO
- * @author: tangyl
- * @since: 2019/7/4
+ * 书单图书VO
+ * @author: zealon
+ * @since: 2020/4/7
  */
 @Data
-public class BookVO implements Serializable {
+public class BooklistBookVO implements Serializable {
 
     private static final Long serialVersionUID = 1L;
 
@@ -20,11 +20,6 @@ public class BookVO implements Serializable {
     private String imgUrl;
     private Integer authorId;
     private String authorName;
-    private Integer categoryId;
     private String categoryName;
-    private String keyword;
-    private Date lastUpdateChapterDate;
-    private String lastUpdateChapterName;
-    private Long lastUpdateChapterId;
     private Integer wordCount;
 }

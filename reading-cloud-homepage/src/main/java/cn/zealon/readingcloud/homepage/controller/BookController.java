@@ -1,6 +1,6 @@
 package cn.zealon.readingcloud.homepage.controller;
 
-import cn.zealon.readingcloud.homepage.service.BookService;
+import cn.zealon.readingcloud.homepage.service.BookCenterService;
 import cn.zealon.readingcloud.homepage.vo.BookVO;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
@@ -24,7 +24,7 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private BookService bookService;
+    private BookCenterService bookService;
 
     @ApiOperation(value = "查询图书信息（根据bookId）")
     @ApiImplicitParams({

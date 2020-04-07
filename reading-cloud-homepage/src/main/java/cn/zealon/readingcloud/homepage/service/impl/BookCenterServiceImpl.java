@@ -1,6 +1,7 @@
 package cn.zealon.readingcloud.homepage.service.impl;
 
-import cn.zealon.readingcloud.homepage.service.BookService;
+import cn.zealon.readingcloud.common.cache.RedisService;
+import cn.zealon.readingcloud.homepage.service.BookCenterService;
 import cn.zealon.readingcloud.homepage.vo.BookVO;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
@@ -11,15 +12,18 @@ import cn.zealon.readingcloud.book.feign.client.BookClient;
 import java.util.List;
 
 /**
- * 图书
- * @author: tangyl
+ * 图书中心服务
+ * @author: zealon
  * @since: 2019/7/4
  */
 @Service
-public class BookServiceImpl implements BookService {
+public class BookCenterServiceImpl implements BookCenterService {
 
     @Autowired
     private BookClient bookClient;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public BookVO getBookDetailsById(String bookId) {

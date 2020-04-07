@@ -23,7 +23,7 @@ public class RedisService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisService.class);
 
     /** 默认缓存时间(10分钟) */
-    public static final Long DEFAULT_CACHE_TIME = RedisConstant.Expire.MINUTE_TEN;
+    public static final Long DEFAULT_CACHE_TIME = RedisExpire.MINUTE_TEN;
 
     /** 操作字符串 */
     private ValueOperations<String, String> valueOperations;
@@ -383,6 +383,14 @@ public class RedisService {
             return null;
         }
         return JSONObject.parseObject(val.toString(), c);
+    }
+
+    public <T> List<T> getHashListVal(String key, String field, Class<T> c){
+        Object val = this.hashOperations.get(key, field);
+        if (val == null) {
+            return null;
+        }
+        return JSONObject.parseArray(val.toString(), c);
     }
 
     public void setHashValExpire(String key, String field, Object val, Long time){
