@@ -1,5 +1,6 @@
 package cn.zealon.readingcloud.homepage.service.impl;
 
+import cn.zealon.readingcloud.common.cache.RedisExpire;
 import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
 import cn.zealon.readingcloud.common.pojo.index.IndexPageConfig;
@@ -54,6 +55,7 @@ public class IndexPageConfigServiceImpl implements IndexPageConfigService {
         // 获得精品页配置
         List<IndexPageConfig> pageConfigs = this.getIndexPageWithPaging(type, page, limit);
         if (Utils.isEmpty(pageConfigs)) {
+            LOGGER.warn("当前请求页没有配置项！");
             return ResultUtil.success(new ArrayList<>()).buildMessage("当前请求页没有配置项！");
         }
 
@@ -90,7 +92,8 @@ public class IndexPageConfigServiceImpl implements IndexPageConfigService {
             }
 
             if (pageVOS.size() > 0) {
-                // todo 缓存
+                // 缓存精品页
+                this.redisService.setHashValExpire(key, page.toString(), IndexPageVO.class, RedisExpire.DAY);
             }
         }
         return ResultUtil.success(pageVOS);

@@ -50,7 +50,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
             booklistVO = redisService.getHashVal(key, randomNumber.toString(), IndexBooklistVO.class);
             if (booklistVO == null) {
                 // DB 随机获取
-                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
+                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
                 if (books.size() > 0) {
                     booklistVO = new IndexBooklistVO();
                     BeanUtils.copyProperties(booklist, booklistVO);
@@ -64,7 +64,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
             booklistVO = this.redisService.getCache(key, IndexBooklistVO.class);
             if (booklistVO == null) {
                 // DB 顺序获取
-                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistOrderBooks(booklist.getBookIds(), booklist.getShowNumber());
+                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistOrderBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber());
                 if (books.size() > 0) {
                     booklistVO = new IndexBooklistVO();
                     BeanUtils.copyProperties(booklist, booklistVO);
