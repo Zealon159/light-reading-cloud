@@ -1,18 +1,54 @@
 package cn.zealon.readingcloud.common.pojo.index;
 
-import java.util.List;
-//import org.apache.ibatis.annotations.Param;
+import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 书单配置明细项
  * @author: zealon
  * @since: 2020/4/6
  */
-public interface IndexBooklistItem {
+@Data
+public class IndexBooklistItem implements Serializable {
+
+    private static final Long serialVersionUID = 1L;
+
+    private Integer id;
+
     /**
-     * 查询书单图书ID
-     * @param booklistId
-     * @return
+     * 书单id
      */
-    List<String> selectBookIds(Integer booklistId,Integer limit);
+    private Integer booklistId;
+
+    /**
+     * 图书id
+     */
+    private String bookId;
+
+    /**
+     * 排序
+     */
+    private Integer sortNumber;
+
+    /**
+     * 创建者
+     */
+    private String creater;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 更新者
+     */
+    private String updater;
+
 }

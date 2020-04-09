@@ -5,7 +5,7 @@ import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
 import cn.zealon.readingcloud.common.pojo.index.IndexBooklist;
 import cn.zealon.readingcloud.homepage.common.Const;
-import cn.zealon.readingcloud.homepage.common.enums.BooklistMoreTypeEnum;
+import cn.zealon.readingcloud.common.enums.BooklistMoreTypeEnum;
 import cn.zealon.readingcloud.homepage.dao.IndexBooklistMapper;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistItemService;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistService;
@@ -41,24 +41,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
         boolean randomFlag = booklist.getMoreType() == BooklistMoreTypeEnum.EXCHANGE.getValue() ? true : false;
         IndexBooklistVO booklistVO;
         if (randomFlag) {
-            Random random = new Random();
-            Integer randomNumber = random.nextInt(Const.BOOKLIST_RANDOM_COUNT);
-            while (randomNumber == clientRandomNumber) {
-                randomNumber = random.nextInt(Const.BOOKLIST_RANDOM_COUNT);
-            }
-            String key = RedisHomepageKey.getBooklistRandomVoKey(booklistId);
-            booklistVO = redisService.getHashVal(key, randomNumber.toString(), IndexBooklistVO.class);
-            if (booklistVO == null) {
-                // DB 随机获取
-                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
-                if (books.size() > 0) {
-                    booklistVO = new IndexBooklistVO();
-                    BeanUtils.copyProperties(booklist, booklistVO);
-                    booklistVO.setBooks(books);
-                    // Hash缓存
-                    this.redisService.setHashValExpire(key, randomNumber.toString(), booklistVO, RedisExpire.HOUR_TWO);
-                }
-            }
+            booklistVO = this.getRandomIndexBooklistVO(booklist, clientRandomNumber);
         } else {
             String key = RedisHomepageKey.getBooklistVoKey(booklistId);
             booklistVO = this.redisService.getCache(key, IndexBooklistVO.class);
@@ -69,6 +52,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
                     booklistVO = new IndexBooklistVO();
                     BeanUtils.copyProperties(booklist, booklistVO);
                     booklistVO.setBooks(books);
+                    booklistVO.setRandomNumber(1);
                     this.redisService.setExpireCache(key, booklistVO, RedisExpire.HOUR_TWO);
                 }
             }
@@ -87,5 +71,31 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
             }
         }
         return booklist;
+    }
+
+    @Override
+    public IndexBooklistVO getRandomIndexBooklistVO(IndexBooklist booklist, Integer clientRandomNumber){
+        Random random = new Random();
+        Integer randomNumber = random.nextInt(Const.BOOKLIST_RANDOM_COUNT);
+        if (clientRandomNumber != null) {
+            while (randomNumber.intValue() == clientRandomNumber) {
+                randomNumber = random.nextInt(Const.BOOKLIST_RANDOM_COUNT);
+            }
+        }
+        String key = RedisHomepageKey.getBooklistRandomVoKey(booklist.getId());
+        IndexBooklistVO booklistVO = redisService.getHashVal(key, randomNumber.toString(), IndexBooklistVO.class);
+        if (booklistVO == null) {
+            // DB 随机获取
+            List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
+            if (books.size() > 0) {
+                booklistVO = new IndexBooklistVO();
+                BeanUtils.copyProperties(booklist, booklistVO);
+                booklistVO.setBooks(books);
+                booklistVO.setRandomNumber(randomNumber);
+                // Hash缓存
+                this.redisService.setHashValExpire(key, randomNumber.toString(), booklistVO, RedisExpire.HOUR_TWO);
+            }
+        }
+        return booklistVO;
     }
 }

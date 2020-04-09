@@ -1,21 +1,30 @@
 package cn.zealon.readingcloud.homepage.service.impl;
 
+import cn.zealon.readingcloud.common.cache.RedisExpire;
 import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
+import cn.zealon.readingcloud.common.enums.BookCategoryEnum;
+import cn.zealon.readingcloud.common.enums.BookSerialStatusEnum;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.pojo.index.IndexBooklist;
+import cn.zealon.readingcloud.common.pojo.index.IndexBooklistItem;
 import cn.zealon.readingcloud.common.result.Result;
 import cn.zealon.readingcloud.common.result.ResultUtil;
+import cn.zealon.readingcloud.common.utils.Utils;
+import cn.zealon.readingcloud.homepage.common.Const;
+import cn.zealon.readingcloud.homepage.dao.IndexBooklistItemMapper;
 import cn.zealon.readingcloud.homepage.service.BookCenterService;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistItemService;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistService;
 import cn.zealon.readingcloud.homepage.vo.BooklistBookVO;
+import cn.zealon.readingcloud.homepage.vo.IndexBooklistVO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 /**
@@ -37,8 +46,11 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private IndexBooklistItemMapper indexBooklistItemMapper;
+
     /**
-     * 书单更多分页接口
+     * 分页 - 书单更多接口
      * @param booklistId            书单ID
      * @param page                  页数
      * @param limit                 每页数量
@@ -46,7 +58,25 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
      */
     @Override
     public Result getBooklistPagingBooks(Integer booklistId, Integer page, Integer limit) {
-        return null;
+        String key = RedisHomepageKey.getBooklistItemPagingKey(booklistId);
+        // 使用页码+数量作为Hash的key，防止不同数量的分页页码冲突
+        String field = page.toString() + limit;
+        List<BooklistBookVO> list = this.redisService.getHashListVal(key, field, BooklistBookVO.class);
+        if (Utils.isEmpty(list)) {
+            list = new ArrayList<>();
+            PageHelper.startPage(page, limit);
+            Page<IndexBooklistItem> pageList = (Page<IndexBooklistItem>) this.indexBooklistItemMapper.findPageWithResult(booklistId);
+            for (int i = 0; i < pageList.size(); i++) {
+                String bookId = pageList.get(i).getBookId();
+                BooklistBookVO vo = this.getBookVO(bookId);
+                list.add(vo);
+            }
+
+            if (list.size() > 0) {
+                this.redisService.setHashValExpire(key, field, list, RedisExpire.HOUR_TWO);
+            }
+        }
+        return ResultUtil.success(list);
     }
 
     /**
@@ -62,9 +92,9 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
             return ResultUtil.notFound().buildMessage("找不到此书单哦！");
         }
 
-        // 获取随机书单
-        List<BooklistBookVO> randomBooks = this.getBooklistRandomBooks(booklistId, booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
-        return ResultUtil.success(randomBooks);
+        // 缓存获取随机书单
+        IndexBooklistVO randomIndexBooklistVO = this.indexBooklistService.getRandomIndexBooklistVO(booklist, clientRandomNumber);
+        return ResultUtil.success(randomIndexBooklistVO);
     }
 
     /**
@@ -102,27 +132,34 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
             }
         }
 
-        String[] randomBookIdArray = (String[]) randomBooks.toArray();
-        return this.getBooklistBookVOByBookIdArray(randomBookIdArray);
+        String[] randomBookIdArray = {};
+        randomBookIdArray = randomBooks.toArray(randomBookIdArray);
+        return this.getBooklistBookVOByBookIdArray(randomBookIdArray, showNumber);
     }
 
     @Override
     public List<BooklistBookVO> getBooklistOrderBooks(Integer booklistId, String bookIds, Integer showNumber) {
         String[] bookIdArray = bookIds.split(",");
-        return this.getBooklistBookVOByBookIdArray(bookIdArray);
+        return this.getBooklistBookVOByBookIdArray(bookIdArray, showNumber);
     }
 
     /**
      * 获取书单VO
      * @param bookIdArray
+     * @param showNumber
      * @return
      */
-    private List<BooklistBookVO> getBooklistBookVOByBookIdArray(String[] bookIdArray){
+    private List<BooklistBookVO> getBooklistBookVOByBookIdArray(String[] bookIdArray, Integer showNumber){
         List<BooklistBookVO> vos = new ArrayList<>();
         for (int i = 0; i < bookIdArray.length; i++) {
             String bookId = bookIdArray[i];
             BooklistBookVO vo = this.getBookVO(bookId);
             vos.add(vo);
+
+            // VOS到达榜单定制数量，不再获取了
+            if (vos.size() == showNumber) {
+                break;
+            }
         }
         return vos;
     }
@@ -133,16 +170,19 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
      * @return
      */
     private BooklistBookVO getBookVO(String bookId){
-        Result result = this.bookCenterService.getBookById(bookId);
-        if (result.getData() == null) {
+        Book book = this.bookCenterService.getBookById(bookId);
+        if (book == null) {
             LOGGER.warn("图书资源中心获取Book:{}失败！返回了空数据", bookId);
             return null;
         }
-        Book book = (Book) result.getData();
         BooklistBookVO vo = new BooklistBookVO();
         BeanUtils.copyProperties(book, vo);
-        // todo 获取分类
-
+        // 分类
+        String categoryName = BookCategoryEnum.values()[book.getDicCategory() - 1].getName();
+        vo.setCategoryName(categoryName);
+        // 连载状态
+        String serialStatusName = BookSerialStatusEnum.values()[book.getDicSerialStatus() - 1].getName();
+        vo.setSerialStatusName(serialStatusName);
         return vo;
     }
 
@@ -152,13 +192,24 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
      * @return
      */
     private Set<String> getClientBookIds(Integer booklistId, Integer clientRandomNumber){
+        if (clientRandomNumber == null) {
+            return new HashSet<>();
+        }
+
         // 客户端当前显示的书单
         String key = RedisHomepageKey.getBooklistRandomVoKey(booklistId);
+        IndexBooklistVO booklistVO = null;
         List<BooklistBookVO> clientBooks = null;
         try {
-            clientBooks = this.redisService.getHashListVal(key, clientRandomNumber.toString(), BooklistBookVO.class);
+            booklistVO = this.redisService.getHashVal(key, clientRandomNumber.toString(), IndexBooklistVO.class);
+            if (booklistVO != null) {
+                clientBooks = booklistVO.getBooks();
+            }
         } catch (Exception ex){
             LOGGER.error("Redis获取客户端书单失败了！booklistId:{},clientRandomNumber:{}", ex, booklistId, clientRandomNumber);
+        }
+        if (clientBooks == null) {
+            clientBooks = new ArrayList<>();
         }
         return new HashSet(clientBooks);
     }

@@ -36,8 +36,16 @@ public class RedisHomepageKey {
         return String.format("home-page:booklist-random-vo-%s", booklistId);
     }
 
-    /** 主页书单DB缓存Key */
-    public static final String getBooklistItemKey(Integer booklistId){
-        return String.format("home-page:booklist-item-%s", booklistId);
+    /** 主页书单图书分页更多 */
+    public static final String getBooklistItemPagingKey(Integer booklistId){
+        return String.format("home-page:booklist-item-paging-%s", booklistId);
+    }
+
+    public static final class BookCenter{
+        /** 资源中心图书缓存 */
+        public static final String getBookKey(String bookId){
+            return String.format("home-page:book-%s",bookId);
+        }
+
     }
 }

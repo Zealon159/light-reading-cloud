@@ -28,7 +28,7 @@ public class BookController {
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = Book.class)})
     @GetMapping("/getBookById")
-    public Result getBookById(String bookId){
+    public Result<Book> getBookById(String bookId){
         return bookService.getBookById(bookId);
     }
 

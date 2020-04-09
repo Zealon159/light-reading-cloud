@@ -22,4 +22,6 @@ public class BooklistBookVO implements Serializable {
     private String authorName;
     private String categoryName;
     private Integer wordCount;
+    /** 连载状态 */
+    private String serialStatusName;
 }

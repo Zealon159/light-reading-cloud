@@ -1,4 +1,4 @@
-package cn.zealon.readingcloud.homepage.common.enums;
+package cn.zealon.readingcloud.common.enums;
 
 /**
  * 书单更多枚举

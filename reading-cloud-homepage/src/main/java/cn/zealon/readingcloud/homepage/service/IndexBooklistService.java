@@ -24,4 +24,12 @@ public interface IndexBooklistService {
      * @return
      */
     IndexBooklist getIndexBooklistById(Integer booklistId);
+
+    /**
+     * 获取随机榜单VO
+     * @param booklist
+     * @param clientRandomNumber
+     * @return
+     */
+    IndexBooklistVO getRandomIndexBooklistVO(IndexBooklist booklist, Integer clientRandomNumber);
 }

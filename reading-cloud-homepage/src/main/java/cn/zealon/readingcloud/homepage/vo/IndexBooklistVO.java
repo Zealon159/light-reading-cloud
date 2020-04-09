@@ -14,6 +14,8 @@ public class IndexBooklistVO implements Serializable {
 
     private static final Long serialVersionUID = 1L;
 
+    private Integer id;
+
     /**
      * 名称
      */
@@ -31,6 +33,9 @@ public class IndexBooklistVO implements Serializable {
 
     /** 更多链接 */
     private String moreUrl;
+
+    /** 换一换随机编码 */
+    private Integer randomNumber;
 
     /** 榜单图书 */
     private List<BooklistBookVO> books;

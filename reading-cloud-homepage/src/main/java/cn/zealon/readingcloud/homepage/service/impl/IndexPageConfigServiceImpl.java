@@ -67,7 +67,7 @@ public class IndexPageConfigServiceImpl implements IndexPageConfigService {
 
             // 模块是否有效
             boolean okFlag = true;
-            switch (pageConfig.getPageType()){
+            switch (pageConfig.getItemType()){
                 case 1:
                     // 书单
                     vo.setBooklist(this.indexBooklistService.getIndexBooklistVO(pageConfig.getItemId(), null));
@@ -90,11 +90,11 @@ public class IndexPageConfigServiceImpl implements IndexPageConfigService {
             if (okFlag) {
                 pageVOS.add(vo);
             }
+        }
 
-            if (pageVOS.size() > 0) {
-                // 缓存精品页
-                this.redisService.setHashValExpire(key, page.toString(), IndexPageVO.class, RedisExpire.DAY);
-            }
+        if (pageVOS.size() > 0) {
+            // 缓存精品页
+            this.redisService.setHashValExpire(key, page.toString(), pageVOS, RedisExpire.DAY);
         }
         return ResultUtil.success(pageVOS);
     }

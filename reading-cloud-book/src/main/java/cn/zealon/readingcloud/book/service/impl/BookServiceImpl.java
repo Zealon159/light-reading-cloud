@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
     private RedisService redisService;
 
     @Override
-    public Result getBookById(String bookId) {
+    public Result<Book> getBookById(String bookId) {
         String key = RedisBookKey.getBookKey(bookId);
         Book book = this.redisService.getCache(key, Book.class);
         if (null == book) {
