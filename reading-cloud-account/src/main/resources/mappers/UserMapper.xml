@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zealon.readingcloud.account.dao.UserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.zealon.readingcloud.common.pojo.account.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+        <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, uuid, user_pwd, login_name, nick_name, phone_number, head_img_url, create_time,
+      update_time
+    </sql>
+
+    <insert id="insert" parameterType="cn.zealon.readingcloud.common.pojo.account.User">
+      insert into user (id, uuid, user_pwd,
+        login_name, nick_name, phone_number,
+        head_img_url, create_time, update_time
+        )
+      values (#{id,jdbcType=INTEGER}, #{uuid,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+        #{loginName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR},
+        #{headImgUrl,jdbcType=VARCHAR}, now(), now()
+        )
+    </insert>
+
+    <update id="updateByLoginName" parameterType="cn.zealon.readingcloud.common.pojo.account.User">
+        update user
+        <set>
+            <if test="userPwd != null">
+                user_pwd = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="headImgUrl != null">
+                head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where login_name = #{loginName,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  user
+        where login_name = #{loginName,jdbcType=VARCHAR}
+    </select>
+</mapper>
