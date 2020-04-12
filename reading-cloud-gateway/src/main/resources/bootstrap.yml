@@ -12,12 +12,33 @@ spring:
           enabled: true
           lowerCaseServiceId: true
       routes:
-        - id: bookstore-book-center
-          uri: lb://bookstore-book-center
+        - id: book-center-rpc
+          uri: lb://light-reading-cloud-book
           predicates:
             - Path=/book/**
+            - Method=GET
+          filters:
+            # 降级配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3 # 每秒允许处理的请求数量
+                redis-rate-limiter.burstCapacity: 5 # 每秒最大处理的请求数量
+                key-resolver: "#{@ipKeyResolver}" # 限流策略，对应策略的Bean
 
 
+        - id: homepage-rpc
+          uri: lb://light-reading-cloud-homepage
+          predicates:
+            - Path=/index/**
+        - id: account-center-rpc
+          uri: lb://light-reading-cloud-account
+          predicates:
+            - Path=/account/**
 
 eureka:
   instance:

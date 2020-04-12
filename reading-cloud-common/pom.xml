@@ -16,12 +16,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- Spring-MVC -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
