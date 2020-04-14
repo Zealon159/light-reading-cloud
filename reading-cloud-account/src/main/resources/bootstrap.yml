@@ -7,6 +7,7 @@ server:
 spring:
   application:
     name: light-reading-cloud-account
+  # 数据源配置
   datasource:
     account-center:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,6 +21,14 @@ spring:
       test-while-idle: true
       validation-query: 'select 1 from dual'
       connect-timeout: 1500
+
+  # 线程池配置
+  thread-pool:
+    bookshelf:
+      corePoolSize: 1
+      maximumPoolSize: 3
+      keepAliveTime: 0
+      queueCapacity: 10240
 
 eureka:
   client:

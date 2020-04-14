@@ -1,7 +1,7 @@
 package cn.zealon.readingcloud.account.service;
 
 import cn.zealon.readingcloud.account.bo.UserBO;
-import cn.zealon.readingcloud.account.vo.UserVO;
+import cn.zealon.readingcloud.account.vo.AuthVO;
 import cn.zealon.readingcloud.common.result.Result;
 
 /**
@@ -24,7 +24,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    Result<UserVO> login(String loginName, String password);
+    Result<AuthVO> login(String loginName, String password);
 
     /**
      * 退出登录

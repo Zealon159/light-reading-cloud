@@ -1,9 +1,11 @@
 package cn.zealon.readingcloud.account.service.impl;
 
 import cn.zealon.readingcloud.account.bo.UserBO;
+import cn.zealon.readingcloud.account.common.utils.JwtUtil;
 import cn.zealon.readingcloud.account.common.utils.UserUtil;
 import cn.zealon.readingcloud.account.dao.UserMapper;
 import cn.zealon.readingcloud.account.service.UserService;
+import cn.zealon.readingcloud.account.vo.AuthVO;
 import cn.zealon.readingcloud.account.vo.UserVO;
 import cn.zealon.readingcloud.common.pojo.account.User;
 import cn.zealon.readingcloud.common.result.Result;
@@ -14,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Calendar;
+import java.util.Date;
+import static cn.zealon.readingcloud.common.constant.JwtConstant.EXPIRE_DAY;
 
 /**
  * 账户服务
@@ -52,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result<UserVO> login(String loginName, String password) {
+    public Result<AuthVO> login(String loginName, String password) {
         try{
             User user = this.userMapper.selectByLoginName(loginName);
             if (null == user) {
@@ -66,8 +71,11 @@ public class UserServiceImpl implements UserService {
             }
 
             // 登录成功，返回用户信息
-            UserVO vo = new UserVO();
-            BeanUtils.copyProperties(user, vo);
+            AuthVO vo = new AuthVO();
+            UserVO userVo = new UserVO();
+            BeanUtils.copyProperties(user, userVo);
+            vo.setToken(JwtUtil.buildJwt(this.getLoginExpre(), userVo));
+            vo.setUser(userVo);
             return ResultUtil.success(vo);
         } catch (Exception ex) {
             LOGGER.error("注册登录失败了！{}; loginName:{}", ex, loginName);
@@ -88,5 +96,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result updatePassword(UserBO userBO) {
         return null;
+    }
+
+    /**
+     * 获取登陆过期时间
+     * @return
+     */
+    private Date getLoginExpre(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, EXPIRE_DAY);
+        return calendar.getTime();
     }
 }

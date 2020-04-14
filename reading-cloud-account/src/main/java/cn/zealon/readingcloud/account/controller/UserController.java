@@ -2,7 +2,7 @@ package cn.zealon.readingcloud.account.controller;
 
 import cn.zealon.readingcloud.account.bo.UserBO;
 import cn.zealon.readingcloud.account.service.UserService;
-import cn.zealon.readingcloud.account.vo.UserVO;
+import cn.zealon.readingcloud.account.vo.AuthVO;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,9 @@ public class UserController {
         @ApiImplicitParam(paramType = "query", name = "loginName", value = "登录名", required = true, dataType = "String"),
         @ApiImplicitParam(paramType = "query", name = "password", value = "登录密码", required = true, dataType = "String")
     })
-    @ApiResponses({@ApiResponse(code = 200, message = "", response = UserVO.class)})
+    @ApiResponses({@ApiResponse(code = 200, message = "", response = AuthVO.class)})
     @PostMapping("/login")
-    public Result<UserVO> login(String loginName, String password) {
+    public Result<AuthVO> login(String loginName, String password) {
         return this.userService.login(loginName, password);
     }
 }
