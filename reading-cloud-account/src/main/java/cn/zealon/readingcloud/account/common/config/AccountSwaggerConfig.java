@@ -1,4 +1,4 @@
-package cn.zealon.readingcloud.account.common;
+package cn.zealon.readingcloud.account.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +23,7 @@ public class AccountSwaggerConfig {
 
     /**
      * swagger生成
+     *
      * @return Docket
      */
     @Bean
@@ -43,7 +44,7 @@ public class AccountSwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("账户中心接口")
-                .description("账户中心")
+                .description("账户、认证、书架相关")
                 .termsOfServiceUrl("")
                 .contact(new Contact("", "", ""))
                 .license("")

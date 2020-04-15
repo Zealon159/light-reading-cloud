@@ -91,11 +91,19 @@ public class ResultUtil {
     }
 
     /**
+     * 认证到期
+     * @return
+     */
+    public static Result authExpired() {
+        return new Result(HttpCodeEnum.AUTH_EXPIRED.getCode(), HttpCodeEnum.AUTH_EXPIRED.getMessage());
+    }
+
+    /**
      * 没有权限
      * @return
      */
     public static Result unAuthorized() {
-        return new Result(HttpCodeEnum.UNAUTHORIZED.getCode(),HttpCodeEnum.UNAUTHORIZED.getMessage());
+        return new Result(HttpCodeEnum.UNAUTHORIZED.getCode(), HttpCodeEnum.UNAUTHORIZED.getMessage());
     }
 
     /**

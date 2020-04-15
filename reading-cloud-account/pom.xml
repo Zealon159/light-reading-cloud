@@ -95,6 +95,14 @@
             <artifactId>reading-cloud-common</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!-- 图书中心feign客户端 -->
+        <dependency>
+            <groupId>cn.zealon</groupId>
+            <artifactId>reading-cloud-book-feign-client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

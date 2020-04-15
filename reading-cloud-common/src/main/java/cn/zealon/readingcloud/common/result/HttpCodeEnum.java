@@ -34,7 +34,8 @@ public enum HttpCodeEnum {
     VERIFICATION_FAILED(1001, "业务逻辑验证未通过"),
     USERNAME_OR_PASSWORD_ERR(2000,"用户未登录或token已失效"),
     DELETE_DEFAULT_PHOTO_ERR(2001,"默认头像不可删除"),
-    TOKEN_ERR(200, "token无效");
+    AUTH_EXPIRED(3000,"认证到期"),
+    TOKEN_ERR(3001, "token无效");
 
     private final int code;
     private final String message;

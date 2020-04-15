@@ -1,6 +1,8 @@
 package cn.zealon.readingcloud.account.dao;
 
 import cn.zealon.readingcloud.common.pojo.account.UserBookshelf;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -10,11 +12,11 @@ import java.util.List;
  */
 public interface UserBookshelfMapper {
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(UserBookshelf userBookshelf);
 
-    int updateByPrimaryKey(UserBookshelf userBookshelf);
+    int updateByUserIdAndBookId(UserBookshelf userBookshelf);
 
     UserBookshelf selectById(Integer id);
 

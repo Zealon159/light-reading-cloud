@@ -40,12 +40,4 @@ public class RedisHomepageKey {
     public static final String getBooklistItemPagingKey(Integer booklistId){
         return String.format("home-page:booklist-item-paging-%s", booklistId);
     }
-
-    public static final class BookCenter{
-        /** 资源中心图书缓存 */
-        public static final String getBookKey(String bookId){
-            return String.format("home-page:book-%s",bookId);
-        }
-
-    }
 }
