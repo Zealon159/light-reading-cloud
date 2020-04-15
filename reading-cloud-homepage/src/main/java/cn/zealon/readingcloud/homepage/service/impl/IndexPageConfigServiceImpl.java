@@ -6,7 +6,7 @@ import cn.zealon.readingcloud.common.cache.RedisService;
 import cn.zealon.readingcloud.common.pojo.index.IndexPageConfig;
 import cn.zealon.readingcloud.common.result.Result;
 import cn.zealon.readingcloud.common.result.ResultUtil;
-import cn.zealon.readingcloud.common.utils.Utils;
+import cn.zealon.readingcloud.common.utils.CommonUtil;
 import cn.zealon.readingcloud.homepage.dao.IndexPageConfigMapper;
 import cn.zealon.readingcloud.homepage.service.IndexBannerService;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistService;
@@ -54,7 +54,7 @@ public class IndexPageConfigServiceImpl implements IndexPageConfigService {
 
         // 获得精品页配置
         List<IndexPageConfig> pageConfigs = this.getIndexPageWithPaging(type, page, limit);
-        if (Utils.isEmpty(pageConfigs)) {
+        if (CommonUtil.isEmpty(pageConfigs)) {
             LOGGER.warn("当前请求页没有配置项！");
             return ResultUtil.success(new ArrayList<>()).buildMessage("当前请求页没有配置项！");
         }

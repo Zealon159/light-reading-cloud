@@ -27,7 +27,7 @@ public class IndexBooklistItemController {
             @ApiImplicitParam(paramType = "query", name = "limit", value = "每页数量", required = true, dataType = "Integer")
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = BookVO.class)})
-    @GetMapping("/getBooklistPagingBooks")
+    @GetMapping("index/getBooklistPagingBooks")
     public Result getBooklistPagingBooks(Integer booklistId, Integer page, Integer limit) {
         return this.indexBooklistItemService.getBooklistPagingBooks(booklistId, page, limit);
     }
@@ -38,7 +38,7 @@ public class IndexBooklistItemController {
             @ApiImplicitParam(paramType = "query", name = "clientRandomNumber", value = "客户端当前书单编号", required = true, dataType = "Integer")
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = BookVO.class)})
-    @GetMapping("/getBooklistExchange")
+    @GetMapping("index/getBooklistExchange")
     public Result getBooklistExchange(Integer booklistId, Integer clientRandomNumber) {
         return this.indexBooklistItemService.getBooklistExchange(booklistId, clientRandomNumber);
     }

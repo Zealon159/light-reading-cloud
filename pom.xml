@@ -25,6 +25,7 @@
         <module>reading-cloud-feign-client</module>
         <module>reading-cloud-gateway</module>
         <module>reading-cloud-homepage</module>
+        <module>reading-cloud-account</module>
     </modules>
 
     <properties>

@@ -5,7 +5,7 @@ import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
 import cn.zealon.readingcloud.common.pojo.index.IndexBanner;
 import cn.zealon.readingcloud.common.pojo.index.IndexBannerItem;
-import cn.zealon.readingcloud.common.utils.Utils;
+import cn.zealon.readingcloud.common.utils.CommonUtil;
 import cn.zealon.readingcloud.homepage.dao.IndexBannerItemMapper;
 import cn.zealon.readingcloud.homepage.dao.IndexBannerMapper;
 import cn.zealon.readingcloud.homepage.service.IndexBannerService;
@@ -50,7 +50,7 @@ public class IndexBannerServiceImpl implements IndexBannerService {
 
         // DB查询Banner明细
         List<IndexBannerItem> bannerItems = this.indexBannerItemMapper.findPageWithResult(bannerId);
-        if (Utils.isEmpty(bannerItems)) {
+        if (CommonUtil.isEmpty(bannerItems)) {
             return null;
         }
 

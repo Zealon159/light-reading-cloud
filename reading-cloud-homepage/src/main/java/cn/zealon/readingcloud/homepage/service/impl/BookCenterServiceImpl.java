@@ -1,12 +1,10 @@
 package cn.zealon.readingcloud.homepage.service.impl;
 
+import cn.zealon.readingcloud.common.cache.RedisBookKey;
 import cn.zealon.readingcloud.common.cache.RedisExpire;
-import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
-import cn.zealon.readingcloud.common.result.Result;
 import cn.zealon.readingcloud.homepage.service.BookCenterService;
 import cn.zealon.readingcloud.common.pojo.book.Book;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.zealon.readingcloud.book.feign.client.BookClient;
@@ -27,7 +25,7 @@ public class BookCenterServiceImpl implements BookCenterService {
 
     @Override
     public Book getBookById(String bookId) {
-        String key = RedisHomepageKey.BookCenter.getBookKey(bookId);
+        String key = RedisBookKey.BookCenter.getFeignClientBookKey(bookId);
         Book book = this.redisService.getCache(key, Book.class);
         if (book != null) {
             return book;

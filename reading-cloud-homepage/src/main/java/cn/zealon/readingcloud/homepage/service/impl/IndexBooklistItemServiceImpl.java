@@ -10,8 +10,7 @@ import cn.zealon.readingcloud.common.pojo.index.IndexBooklist;
 import cn.zealon.readingcloud.common.pojo.index.IndexBooklistItem;
 import cn.zealon.readingcloud.common.result.Result;
 import cn.zealon.readingcloud.common.result.ResultUtil;
-import cn.zealon.readingcloud.common.utils.Utils;
-import cn.zealon.readingcloud.homepage.common.Const;
+import cn.zealon.readingcloud.common.utils.CommonUtil;
 import cn.zealon.readingcloud.homepage.dao.IndexBooklistItemMapper;
 import cn.zealon.readingcloud.homepage.service.BookCenterService;
 import cn.zealon.readingcloud.homepage.service.IndexBooklistItemService;
@@ -62,14 +61,16 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
         // 使用页码+数量作为Hash的key，防止不同数量的分页页码冲突
         String field = page.toString() + limit;
         List<BooklistBookVO> list = this.redisService.getHashListVal(key, field, BooklistBookVO.class);
-        if (Utils.isEmpty(list)) {
+        if (CommonUtil.isEmpty(list)) {
             list = new ArrayList<>();
             PageHelper.startPage(page, limit);
             Page<IndexBooklistItem> pageList = (Page<IndexBooklistItem>) this.indexBooklistItemMapper.findPageWithResult(booklistId);
             for (int i = 0; i < pageList.size(); i++) {
                 String bookId = pageList.get(i).getBookId();
                 BooklistBookVO vo = this.getBookVO(bookId);
-                list.add(vo);
+                if (vo != null) {
+                    list.add(vo);
+                }
             }
 
             if (list.size() > 0) {
@@ -154,7 +155,9 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
         for (int i = 0; i < bookIdArray.length; i++) {
             String bookId = bookIdArray[i];
             BooklistBookVO vo = this.getBookVO(bookId);
-            vos.add(vo);
+            if (vo != null) {
+                vos.add(vo);
+            }
 
             // VOS到达榜单定制数量，不再获取了
             if (vos.size() == showNumber) {
