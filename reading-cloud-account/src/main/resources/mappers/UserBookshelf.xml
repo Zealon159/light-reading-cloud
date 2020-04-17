@@ -7,7 +7,7 @@
         <result column="user_id" jdbcType="INTEGER" property="userId" />
         <result column="book_id" jdbcType="VARCHAR" property="bookId" />
         <result column="last_chapter_id" jdbcType="INTEGER" property="lastChapterId" />
-        <result column="last_read_time" jdbcType="TIMESTAMP" property="lastReadTime" />
+        <result column="last_read_time" jdbcType="BIGINT" property="lastReadTime" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     </resultMap>
 
@@ -25,7 +25,7 @@
         last_chapter_id, last_read_time, create_time
         )
       values ( #{userId,jdbcType=INTEGER}, #{bookId,jdbcType=VARCHAR},
-        #{lastChapterId,jdbcType=INTEGER}, #{lastReadTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+        #{lastChapterId,jdbcType=INTEGER}, #{lastReadTime,jdbcType=BIGINT}, now()
         )
     </insert>
 
@@ -39,7 +39,7 @@
                 last_chapter_id = #{lastChapterId,jdbcType=INTEGER},
             </if>
             <if test="lastReadTime != null">
-                last_read_time = #{lastReadTime,jdbcType=TIMESTAMP},
+                last_read_time = #{lastReadTime,jdbcType=BIGINT},
             </if>
         </set>
         where user_id = #{userId,jdbcType=INTEGER} and book_id = #{bookId}
@@ -55,16 +55,17 @@
     <sql id="findPageWithWhere">
         <where> 1=1
             <if test="userId != null" >
-                and user_id = #{userId,jdbcType=INTEGER}
+                and user_id = #{userId}
             </if>
         </where>
     </sql>
 
-    <select id="findPageWithResult" resultMap="BaseResultMap">
+    <select id="findPageWithResult" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from  user_bookshelf
         <include refid="findPageWithWhere" />
+        order by last_read_time desc
     </select>
 
 </mapper>

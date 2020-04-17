@@ -26,7 +26,7 @@
     <sql id="findPageWithWhere">
         <where> 1=1
             <if test="userId != null" >
-                and user_id = #{userId,jdbcType=INTEGER}
+                and user_id = #{userId}
             </if>
             <if test="bookId != null and bookId != ''" >
                 and book_id = #{bookId,jdbcType=VARCHAR}
@@ -34,11 +34,11 @@
         </where>
     </sql>
 
-    <select id="findPageWithResult" resultMap="BaseResultMap">
+    <select id="findPageWithResult" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from  user_like_see
-        where user_id = #{userId,jdbcType=INTEGER}
+        where user_id = #{userId}
     </select>
 
     <select id="findPageWithCount" resultType="Integer">

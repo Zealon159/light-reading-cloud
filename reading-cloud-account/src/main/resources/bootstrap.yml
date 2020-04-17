@@ -24,6 +24,13 @@ spring:
 
   # 线程池配置
   thread-pool:
+    # 公用线程池
+    common:
+      corePoolSize: 1
+      maximumPoolSize: 5
+      keepAliveTime: 0
+      queueCapacity: 20480
+    # 书架线程池
     bookshelf:
       corePoolSize: 1
       maximumPoolSize: 3

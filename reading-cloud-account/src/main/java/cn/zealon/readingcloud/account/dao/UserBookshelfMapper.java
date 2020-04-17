@@ -20,5 +20,5 @@ public interface UserBookshelfMapper {
 
     UserBookshelf selectById(Integer id);
 
-    List<UserBookshelf> findPageWithResult(Integer userId);
+    List<UserBookshelf> findPageWithResult(@Param("userId") Integer userId);
 }

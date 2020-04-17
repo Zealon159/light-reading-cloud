@@ -29,7 +29,7 @@ public class LikeSeeController {
         @ApiImplicitParam(paramType = "query", name = "value", value = "值:0取消喜欢,1:喜欢", required = true, dataType = "int")
     })
     @PostMapping("/click")
-    public Result likeSeeClick(@RequestHeader("id") Integer userId, String bookId, Integer value) {
+    public Result likeSeeClick(@RequestHeader("userId") Integer userId, String bookId, Integer value) {
         return this.userLikeSeeService.likeSeeClick(userId, bookId, value);
     }
 
@@ -49,7 +49,7 @@ public class LikeSeeController {
         @ApiImplicitParam(paramType = "query", name = "limit", value = "每页数量", required = true, dataType = "int")
     })
     @GetMapping("/get-user-like-books")
-    public Result getUserLikeBookList(@RequestHeader("id") Integer userId, Integer page, Integer limit) {
+    public Result getUserLikeBookList(@RequestHeader("userId") Integer userId, Integer page, Integer limit) {
         return this.userLikeSeeService.getUserLikeBookList(userId, page, limit);
     }
 }

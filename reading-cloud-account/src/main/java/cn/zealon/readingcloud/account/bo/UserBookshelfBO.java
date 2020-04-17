@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class UserBookshelfBO {
 
+    private Integer id;
+
     /**
      * 同步类型：
      * 1.新增  2.更新  3.删除
@@ -19,9 +21,6 @@ public class UserBookshelfBO {
     /** 图书id */
     private String bookId;
 
-    /** 最后阅读时间 */
-    private Long lastReadTime;
-
     /** 最后章节ID */
-    private String lastChapterId;
+    private Integer lastChapterId;
 }

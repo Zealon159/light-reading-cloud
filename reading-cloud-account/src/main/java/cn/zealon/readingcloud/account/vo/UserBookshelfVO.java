@@ -38,5 +38,5 @@ public class UserBookshelfVO {
     /**
      * 最后阅读时间
      */
-    private Date lastReadTime;
+    private Long lastReadTime;
 }

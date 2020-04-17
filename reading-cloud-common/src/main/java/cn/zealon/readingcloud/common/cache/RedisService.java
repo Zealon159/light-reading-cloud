@@ -398,6 +398,14 @@ public class RedisService {
         this.setExpire(key, time);
     }
 
+    public boolean hashHasKey(String key, String field){
+        return this.hashOperations.hasKey(key, field);
+    }
+
+    public void hashIncrement(String key, String field, Integer val){
+        this.hashOperations.increment(key, field, val);
+    }
+
     /************************************** Hash处理 End */
 
 

@@ -23,8 +23,10 @@ public class UserBookshelfTask implements Runnable {
     public void run() {
         try{
             if (1 == syncType) {
+                this.bookshelf.setUserId(this.userId);
                 this.bookshelfMapper.insert(this.bookshelf);
             } else if (2 == syncType) {
+                this.bookshelf.setUserId(this.userId);
                 this.bookshelfMapper.updateByUserIdAndBookId(this.bookshelf);
             } else if (3 == syncType) {
                 this.bookshelfMapper.deleteById(this.bookshelf.getId());

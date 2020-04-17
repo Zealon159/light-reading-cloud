@@ -34,7 +34,7 @@ public class UserBookshelf implements Serializable {
     /**
      * 最后阅读时间
      */
-    private Date lastReadTime;
+    private Long lastReadTime;
 
     /**
      * 创建时间

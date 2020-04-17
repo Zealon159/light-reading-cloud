@@ -41,8 +41,10 @@ public class UserBookshelfServiceImpl implements UserBookshelfService {
     public Result syncUserBookshelf(Integer userId, UserBookshelfBO bookshelfBO) {
         UserBookshelf bookshelf = new UserBookshelf();
         BeanUtils.copyProperties(bookshelfBO, bookshelf);
+        bookshelf.setLastReadTime(System.currentTimeMillis());
+
         // 异步处理同步任务
-        UserBookshelfTask task = new UserBookshelfTask(userId, bookshelf, this.bookshelfMapper, bookshelfBO.getSyncType());
+        UserBookshelfTask task = new UserBookshelfTask(bookshelfBO.getSyncType(), bookshelf, this.bookshelfMapper, userId);
         this.userBookshelfQueueThreadPool.execute(task);
         return ResultUtil.success();
     }

@@ -2,6 +2,7 @@ package cn.zealon.readingcloud.account.service.impl;
 
 import cn.zealon.readingcloud.account.dao.UserLikeSeeMapper;
 import cn.zealon.readingcloud.account.service.UserLikeSeeService;
+import cn.zealon.readingcloud.account.service.task.LikeSeeClickTask;
 import cn.zealon.readingcloud.book.feign.client.BookClient;
 import cn.zealon.readingcloud.common.cache.RedisAccountKey;
 import cn.zealon.readingcloud.common.cache.RedisExpire;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * 用户喜欢服务
@@ -41,6 +43,9 @@ public class UserLikeSeeServiceImpl implements UserLikeSeeService {
     @Autowired
     private BookClient bookClient;
 
+    @Autowired
+    private ExecutorService commonQueueThreadPool;
+
     @Override
     public Result likeSeeClick(Integer userId, String bookId, Integer value) {
         try{
@@ -53,6 +58,10 @@ public class UserLikeSeeServiceImpl implements UserLikeSeeService {
                 like.setBookId(bookId);
                 this.likeSeeMapper.insert(like);
             }
+
+            // 更新缓存
+            LikeSeeClickTask task = new LikeSeeClickTask(redisService, bookId, value);
+            this.commonQueueThreadPool.execute(task);
         } catch (Exception ex){
             LOGGER.error("用户喜欢点击操作异常：{}",ex);
             return ResultUtil.fail();
