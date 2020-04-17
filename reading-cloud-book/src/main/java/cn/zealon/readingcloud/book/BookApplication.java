@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @EnableFeignClients
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages="cn.zealon.readingcloud")
+@SpringBootApplication(scanBasePackages={"cn.zealon.readingcloud.book", "cn.zealon.readingcloud.common"})
 public class BookApplication {
 
     public static void main(String[] args) {

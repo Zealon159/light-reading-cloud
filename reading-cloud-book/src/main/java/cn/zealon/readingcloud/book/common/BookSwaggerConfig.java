@@ -19,14 +19,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class BookSwaggerConfig {
 
     /**
      * swagger生成
      * @return Docket
      */
     @Bean
-    public Docket customDocket() {
+    public Docket bookDocket() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("cn.zealon.readingcloud.book.controller"))
