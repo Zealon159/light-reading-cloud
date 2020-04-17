@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 图书客户端feign接口快速失败
+ *
  * @author: zealon
  * @since: 2019/7/4
  */

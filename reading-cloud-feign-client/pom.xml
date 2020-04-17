@@ -18,6 +18,7 @@
 
     <modules>
         <module>reading-cloud-book-feign-client</module>
+        <module>reading-cloud-account-feign-client</module>
     </modules>
 
     <dependencies>
@@ -27,6 +28,5 @@
             <version>1.0.0</version>
         </dependency>
     </dependencies>
-
 
 </project>
