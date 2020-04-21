@@ -9,9 +9,9 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
-@EnableFeignClients(basePackages = {"cn.zealon.readingcloud.book.feign.client"})
+@EnableFeignClients(basePackages = {"cn.zealon.readingcloud.book.feign", "cn.zealon.readingcloud.account.feign"})
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages="cn.zealon.readingcloud")
+@SpringBootApplication(scanBasePackages = {"cn.zealon.readingcloud.homepage", "cn.zealon.readingcloud.common", "cn.zealon.readingcloud.book.feign", "cn.zealon.readingcloud.account.feign"})
 @EnableHystrix
 @EnableHystrixDashboard
 public class HomepageApplication {

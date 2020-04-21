@@ -36,14 +36,15 @@ public interface IndexBooklistItemService {
      * @param clientRandomNumber    客户端当前随机编号
      * @return
      */
-    List<BooklistBookVO> getBooklistRandomBooks(Integer booklistId, String bookIds, Integer showNumber, Integer clientRandomNumber);
+    List<BooklistBookVO> getBooklistRandomBooks(Integer booklistId, String bookIds, Integer showNumber, Integer clientRandomNumber, Boolean showLikeCount);
 
     /**
      * 顺序获取书单图书
      * @param booklistId            书单ID
      * @param bookIds               图书IDs
      * @param showNumber            显示数量
+     * @param showLikeCount         显示喜欢数
      * @return
      */
-    List<BooklistBookVO> getBooklistOrderBooks(Integer booklistId, String bookIds, Integer showNumber);
+    List<BooklistBookVO> getBooklistOrderBooks(Integer booklistId, String bookIds, Integer showNumber, Boolean showLikeCount);
 }

@@ -16,11 +16,13 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="updater" jdbcType="VARCHAR" property="updater" />
+        <result column="show_like_count" jdbcType="BIT" property="showLikeCount" />
+
     </resultMap>
 
     <sql id="Base_Column_List">
       id, name, show_number, style, more_type, more_url, book_ids, start_date, end_date, creater, create_time,
-      update_time, updater
+      update_time, updater, show_like_count
     </sql>
 
     <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">

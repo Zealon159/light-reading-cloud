@@ -34,6 +34,12 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
     @Autowired
     private RedisService redisService;
 
+    /**
+     * 获取书单VO
+     * @param booklistId
+     * @param clientRandomNumber
+     * @return
+     */
     @Override
     public IndexBooklistVO getIndexBooklistVO(Integer booklistId, Integer clientRandomNumber) {
         IndexBooklist booklist = this.getIndexBooklistById(booklistId);
@@ -47,7 +53,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
             booklistVO = this.redisService.getCache(key, IndexBooklistVO.class);
             if (booklistVO == null) {
                 // DB 顺序获取
-                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistOrderBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber());
+                List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistOrderBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), booklist.getShowLikeCount());
                 if (books.size() > 0) {
                     booklistVO = new IndexBooklistVO();
                     BeanUtils.copyProperties(booklist, booklistVO);
@@ -86,7 +92,7 @@ public class IndexBooklistServiceImpl implements IndexBooklistService {
         IndexBooklistVO booklistVO = redisService.getHashVal(key, randomNumber.toString(), IndexBooklistVO.class);
         if (booklistVO == null) {
             // DB 随机获取
-            List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber);
+            List<BooklistBookVO> books = this.indexBooklistItemService.getBooklistRandomBooks(booklist.getId(), booklist.getBookIds(), booklist.getShowNumber(), clientRandomNumber, booklist.getShowLikeCount());
             if (books.size() > 0) {
                 booklistVO = new IndexBooklistVO();
                 BeanUtils.copyProperties(booklist, booklistVO);

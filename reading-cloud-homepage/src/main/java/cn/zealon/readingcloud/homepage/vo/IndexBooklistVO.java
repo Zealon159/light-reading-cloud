@@ -16,9 +16,7 @@ public class IndexBooklistVO implements Serializable {
 
     private Integer id;
 
-    /**
-     * 名称
-     */
+    /** 名称 */
     private String name;
 
     /**
@@ -39,4 +37,7 @@ public class IndexBooklistVO implements Serializable {
 
     /** 榜单图书 */
     private List<BooklistBookVO> books;
+
+    /** 是否显示喜欢看 */
+    private Boolean showLikeCount;
 }

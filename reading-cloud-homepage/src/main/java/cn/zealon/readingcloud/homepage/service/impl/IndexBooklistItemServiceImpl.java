@@ -1,5 +1,6 @@
 package cn.zealon.readingcloud.homepage.service.impl;
 
+import cn.zealon.readingcloud.account.feign.client.LikeSeeClient;
 import cn.zealon.readingcloud.common.cache.RedisExpire;
 import cn.zealon.readingcloud.common.cache.RedisHomepageKey;
 import cn.zealon.readingcloud.common.cache.RedisService;
@@ -47,6 +48,9 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
 
     @Autowired
     private IndexBooklistItemMapper indexBooklistItemMapper;
+
+    @Autowired
+    private LikeSeeClient likeSeeClient;
 
     /**
      * 分页 - 书单更多接口
@@ -109,16 +113,17 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
      * @param bookIds               图书IDs
      * @param showNumber            显示数量
      * @param clientRandomNumber    客户端当前随机编号
+     * @param showLikeCount         是否显示喜欢数
      * @return
      */
     @Override
-    public List<BooklistBookVO> getBooklistRandomBooks(Integer booklistId, String bookIds, Integer showNumber, Integer clientRandomNumber) {
+    public List<BooklistBookVO> getBooklistRandomBooks(Integer booklistId, String bookIds, Integer showNumber, Integer clientRandomNumber, Boolean showLikeCount) {
         // 随机获取的书单
         Set<String> randomBooks = new HashSet<>();
         String[] bookIdArray = bookIds.split(",");
         if (bookIdArray.length < showNumber) {
             // 若数据库中不够随机，直接返回顺序书单
-            return this.getBooklistOrderBooks(booklistId, bookIds, showNumber);
+            return this.getBooklistOrderBooks(booklistId, bookIds, showNumber, showLikeCount);
         }
 
         // 客户端书单
@@ -135,27 +140,33 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
 
         String[] randomBookIdArray = {};
         randomBookIdArray = randomBooks.toArray(randomBookIdArray);
-        return this.getBooklistBookVOByBookIdArray(randomBookIdArray, showNumber);
+        return this.getBooklistBookVOByBookIdArray(randomBookIdArray, showNumber, showLikeCount);
     }
 
     @Override
-    public List<BooklistBookVO> getBooklistOrderBooks(Integer booklistId, String bookIds, Integer showNumber) {
+    public List<BooklistBookVO> getBooklistOrderBooks(Integer booklistId, String bookIds, Integer showNumber, Boolean showLikeCount) {
         String[] bookIdArray = bookIds.split(",");
-        return this.getBooklistBookVOByBookIdArray(bookIdArray, showNumber);
+        return this.getBooklistBookVOByBookIdArray(bookIdArray, showNumber, showLikeCount);
     }
 
     /**
      * 获取书单VO
      * @param bookIdArray
      * @param showNumber
+     * @param showLikeCount
      * @return
      */
-    private List<BooklistBookVO> getBooklistBookVOByBookIdArray(String[] bookIdArray, Integer showNumber){
+    private List<BooklistBookVO> getBooklistBookVOByBookIdArray(String[] bookIdArray, Integer showNumber, Boolean showLikeCount){
         List<BooklistBookVO> vos = new ArrayList<>();
         for (int i = 0; i < bookIdArray.length; i++) {
             String bookId = bookIdArray[i];
             BooklistBookVO vo = this.getBookVO(bookId);
             if (vo != null) {
+                // 获取喜欢数
+                if (showLikeCount) {
+                    Integer likeCount = this.likeSeeClient.getBookLikesCount(bookId).getData();
+                    vo.setLikeCount(likeCount);
+                }
                 vos.add(vo);
             }
 
@@ -201,7 +212,7 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
 
         // 客户端当前显示的书单
         String key = RedisHomepageKey.getBooklistRandomVoKey(booklistId);
-        IndexBooklistVO booklistVO = null;
+        IndexBooklistVO booklistVO;
         List<BooklistBookVO> clientBooks = null;
         try {
             booklistVO = this.redisService.getHashVal(key, clientRandomNumber.toString(), IndexBooklistVO.class);
