@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 /**
  * 身份认证过滤器
@@ -34,8 +35,12 @@ public class AuthFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         Set<String> whiteList = this.getWhiteList();
         String path = exchange.getRequest().getPath().toString();
-        if (path.equals("/account/user/login") || path.equals("/account/user/register")) {
-            // 登录、注册接口放行
+        boolean indexMatch = Pattern.matches("/index*", path);
+        boolean bookMatch = Pattern.matches("/book/*", path);
+        String loginUri = "/account/user/login";
+        String registerUri = "/account/user/register";
+        if (bookMatch || indexMatch || path.equals(loginUri) || path.equals(registerUri)) {
+            // 开放接口、登录、注册接口放行
             return chain.filter(exchange);
         }
 
