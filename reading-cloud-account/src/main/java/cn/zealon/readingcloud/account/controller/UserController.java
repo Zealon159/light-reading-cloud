@@ -6,9 +6,8 @@ import cn.zealon.readingcloud.account.vo.AuthVO;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 /**
  * 用户接口
@@ -26,7 +25,7 @@ public class UserController {
     @ApiOperation(value = "注册用户", httpMethod = "POST")
     @ApiResponses({@ApiResponse(code = 200, message = "", response = Result.class)})
     @PostMapping("/register")
-    public Result register(UserBO userBO) {
+    public Result register(@RequestBody UserBO userBO) {
         return this.userService.register(userBO);
     }
 
@@ -37,7 +36,9 @@ public class UserController {
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = AuthVO.class)})
     @PostMapping("/login")
-    public Result<AuthVO> login(String loginName, String password) {
+    public Result<AuthVO> login(@RequestBody Map<String,Object> params) {
+        String loginName = params.get("loginName").toString();
+        String password = params.get("password").toString();
         return this.userService.login(loginName, password);
     }
 }

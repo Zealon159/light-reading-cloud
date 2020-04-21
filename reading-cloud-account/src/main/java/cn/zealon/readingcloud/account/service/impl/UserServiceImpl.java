@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
         user.setUserPwd(encryptPwd);
         try{
             // 设置默认头像
-            user.setHeadImgUrl("default.jpg");
+            user.setHeadImgUrl("http://q94iswz37.bkt.clouddn.com/default.jpg");
             user.setUuid(CommonUtil.getUUID());
             this.userMapper.insert(user);
         } catch (Exception ex) {
             LOGGER.error("注册用户失败了！{}; user:{}", ex, user);
             return ResultUtil.fail().buildMessage("注册失败，服务器被吃了! ＝(#>д<)ﾉ");
         }
-        return ResultUtil.success().buildMessage("注册成功！");
+        return ResultUtil.success().buildMessage("注册成功！请登录吧");
     }
 
     @Override
