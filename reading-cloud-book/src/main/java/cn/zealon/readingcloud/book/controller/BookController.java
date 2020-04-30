@@ -1,6 +1,7 @@
 package cn.zealon.readingcloud.book.controller;
 
 import cn.zealon.readingcloud.book.service.BookService;
+import cn.zealon.readingcloud.book.vo.BookVO;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.*;
@@ -32,4 +33,13 @@ public class BookController {
         return bookService.getBookById(bookId);
     }
 
+    @ApiOperation(value = "获取图书详情" , httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", dataType = "String")
+    })
+    @ApiResponses({@ApiResponse(code = 200, message = "", response = Book.class)})
+    @GetMapping("/details")
+    public Result<BookVO> getBookDetails(String bookId){
+        return bookService.getBookDetails(bookId);
+    }
 }

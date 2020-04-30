@@ -75,4 +75,7 @@ public class IndexBooklist implements Serializable {
      * 更新者
      */
     private String updater;
+
+    /** 是否显示喜欢数 */
+    private Boolean showLikeCount;
 }

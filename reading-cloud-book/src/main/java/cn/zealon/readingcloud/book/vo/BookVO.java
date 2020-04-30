@@ -37,11 +37,6 @@ public class BookVO {
     private String serialStatusName;
 
     /**
-     * 状态：0下架，1上架
-     */
-    private Boolean onlineStatus;
-
-    /**
      * 图书id
      */
     private String bookId;
@@ -77,12 +72,7 @@ public class BookVO {
     private String introduction;
 
     /**
-     * isbn
-     */
-    private String isbn;
-
-    /**
-     * 字数
+     * 字数(万)
      */
     private Integer wordCount;
 }

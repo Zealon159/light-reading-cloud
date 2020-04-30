@@ -35,8 +35,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         Set<String> whiteList = this.getWhiteList();
         String path = exchange.getRequest().getPath().toString();
-        boolean indexMatch = Pattern.matches("/index*", path);
-        boolean bookMatch = Pattern.matches("/book/*", path);
+        boolean indexMatch = Pattern.matches("/index[^\\s]*", path);
+        boolean bookMatch = Pattern.matches("/book/[^\\s]*", path);
         String loginUri = "/account/user/login";
         String registerUri = "/account/user/register";
         if (bookMatch || indexMatch || path.equals(loginUri) || path.equals(registerUri)) {
