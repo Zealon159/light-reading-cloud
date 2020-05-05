@@ -28,7 +28,7 @@ public class UserBookshelfController {
             @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int")
     })
     @PostMapping("/sync-book")
-    public Result syncUserBookshelf(@RequestHeader("userId") Integer userId, UserBookshelfBO bookshelfBO) {
+    public Result syncUserBookshelf(@RequestHeader("userId") Integer userId, @RequestBody UserBookshelfBO bookshelfBO) {
         return this.bookshelfService.syncUserBookshelf(userId, bookshelfBO);
     }
 

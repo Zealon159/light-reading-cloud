@@ -54,11 +54,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
                 User user = result.getData();
                 // 追加请求头用户信息
                 Consumer<HttpHeaders> httpHeaders = httpHeader -> {
-                    httpHeader.set("loginName",user.getLoginName());
+                    httpHeader.set("userId",user.getId().toString());
                     httpHeader.set("nickName",user.getNickName());
-                    httpHeader.set("id",user.getId().toString());
                 };
-                ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate().headers(httpHeaders).build();
+                ServerHttpRequest serverHttpRequest = exchange.getRequest()
+                        .mutate()
+                        .headers(httpHeaders)
+                        .build();
                 exchange.mutate().request(serverHttpRequest).build();
                 return chain.filter(exchange);
             }
@@ -68,7 +70,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             byte[] bits = JSONObject.toJSONString(result).getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = response.bufferFactory().wrap(bits);
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            //指定编码，否则在浏览器中会中文乱码
+            // 指定编码，否则在浏览器中会中文乱码
             response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
             return response.writeWith(Mono.just(buffer));
         }

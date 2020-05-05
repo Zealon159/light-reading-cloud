@@ -32,7 +32,10 @@ public class JwtUtil {
             user.setUuid(claims.get("uuid").toString());
             user.setLoginName(claims.get("loginName").toString());
             user.setNickName(claims.get("nickName").toString());
-            user.setPhoneNumber(claims.get("phoneNumber").toString());
+            if (claims.get("phoneNumber") != null) {
+                user.setPhoneNumber(claims.get("phoneNumber").toString());
+            }
+            user.setId(Integer.parseInt(claims.get("id").toString()));
             user.setHeadImgUrl(claims.get("headImgUrl").toString());
             return ResultUtil.success(user);
         } catch (ExpiredJwtException e) {
@@ -48,7 +51,7 @@ public class JwtUtil {
     }
 
     public static void main(String[] args){
-        String jwt = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1ODc0NDk3MzQsImxvZ2luTmFtZSI6ImFkbWluIiwibmlja05hbWUiOiJhZG1pbiIsInBob25lTnVtYmVyIjoiMTM4MDAxMzgwMDAiLCJoZWFkSW1nVXJsIjoiZGVmYXVsdC5qcGciLCJ1dWlkIjoiZDY3Y2FiODcwZGJjNDRhZDkwNDA4ODhjYmQwMTVhMjQifQ.WJsT9Bz46A15iur9TGPNH2eXBR7F0ightFMD--4NvhM";
+        String jwt = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1ODkxMTcyNzcsImxvZ2luTmFtZSI6IjAwIiwibmlja05hbWUiOiIwMCIsImhlYWRJbWdVcmwiOiJodHRwOi8vcTk0aXN3ejM3LmJrdC5jbG91ZGRuLmNvbS9kZWZhdWx0LmpwZyIsInV1aWQiOiIyMjk0YzBiNmM2Y2Y0MjI1YWRmNTRhNzE2YzNmNDNiZSJ9.diWIKZPpefc5nfGa7S2u2eYIWbF1TYO-MUTHqQCtCFs";
         Result<User> jwtValid = validationToken(jwt);
         if (jwtValid.getCode() == 200) {
             System.out.println(jwtValid.getData().toString());

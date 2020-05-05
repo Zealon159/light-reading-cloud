@@ -30,6 +30,7 @@ public class JwtUtil {
                 .claim("phoneNumber",user.getPhoneNumber())
                 .claim("headImgUrl",user.getHeadImgUrl())
                 .claim("uuid",user.getUuid())
+                .claim("id",user.getId())
                 .compact();
         return jwt;
     }
