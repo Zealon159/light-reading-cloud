@@ -10,6 +10,8 @@ import cn.zealon.readingcloud.common.pojo.account.UserBookshelf;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
 import cn.zealon.readingcloud.common.result.ResultUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ import java.util.concurrent.ExecutorService;
  */
 @Service
 public class UserBookshelfServiceImpl implements UserBookshelfService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserBookshelfServiceImpl.class);
 
     @Autowired
     private UserBookshelfMapper bookshelfMapper;
@@ -66,5 +70,16 @@ public class UserBookshelfServiceImpl implements UserBookshelfService {
             }
         }
         return ResultUtil.success(bookshelfs);
+    }
+
+    @Override
+    public Result<Integer> userBookshelfExistBook(Integer userId, String bookId) {
+        int result = 0;
+        try {
+            result = this.bookshelfMapper.selectCountByUserAndBookId(userId, bookId);
+        } catch (Exception ex){
+            LOGGER.error("查询图书是否在用户书架里异常：{}", ex);
+        }
+        return ResultUtil.success(result);
     }
 }

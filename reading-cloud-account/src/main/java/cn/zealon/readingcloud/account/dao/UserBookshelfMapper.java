@@ -18,6 +18,9 @@ public interface UserBookshelfMapper {
 
     int updateByUserIdAndBookId(UserBookshelf userBookshelf);
 
+    int selectCountByUserAndBookId(@Param("userId") Integer userId,
+                                   @Param("bookId") String bookId);
+
     UserBookshelf selectById(Integer id);
 
     List<UserBookshelf> findPageWithResult(@Param("userId") Integer userId);

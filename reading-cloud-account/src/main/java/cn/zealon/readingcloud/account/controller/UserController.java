@@ -3,11 +3,11 @@ package cn.zealon.readingcloud.account.controller;
 import cn.zealon.readingcloud.account.bo.UserBO;
 import cn.zealon.readingcloud.account.service.UserService;
 import cn.zealon.readingcloud.account.vo.AuthVO;
+import cn.zealon.readingcloud.common.request.RequestParams;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 
 /**
  * 用户接口
@@ -36,9 +36,9 @@ public class UserController {
     })
     @ApiResponses({@ApiResponse(code = 200, message = "", response = AuthVO.class)})
     @PostMapping("/login")
-    public Result<AuthVO> login(@RequestBody Map<String,Object> params) {
-        String loginName = params.get("loginName").toString();
-        String password = params.get("password").toString();
+    public Result<AuthVO> login(@RequestBody RequestParams params) {
+        String loginName = params.getStringValue("loginName");
+        String password = params.getStringValue("password");
         return this.userService.login(loginName, password);
     }
 }

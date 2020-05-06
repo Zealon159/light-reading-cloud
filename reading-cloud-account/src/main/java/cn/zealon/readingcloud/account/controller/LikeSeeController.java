@@ -1,6 +1,7 @@
 package cn.zealon.readingcloud.account.controller;
 
 import cn.zealon.readingcloud.account.service.UserLikeSeeService;
+import cn.zealon.readingcloud.common.request.RequestParams;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,7 +30,9 @@ public class LikeSeeController {
         @ApiImplicitParam(paramType = "query", name = "value", value = "值:0取消喜欢,1:喜欢", required = true, dataType = "int")
     })
     @PostMapping("/click")
-    public Result likeSeeClick(@RequestHeader("userId") Integer userId, String bookId, Integer value) {
+    public Result likeSeeClick(@RequestHeader("userId") Integer userId, @RequestBody RequestParams params) {
+        String bookId = params.getStringValue("bookId");
+        Integer value = params.getIntValue("value");
         return this.userLikeSeeService.likeSeeClick(userId, bookId, value);
     }
 
@@ -51,5 +54,15 @@ public class LikeSeeController {
     @GetMapping("/get-user-like-books")
     public Result getUserLikeBookList(@RequestHeader("userId") Integer userId, Integer page, Integer limit) {
         return this.userLikeSeeService.getUserLikeBookList(userId, page, limit);
+    }
+
+    @ApiOperation(value = "用户是否喜欢此书", httpMethod = "GET")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int"),
+        @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
+    })
+    @GetMapping("/user-like-this-book")
+    public Result<Integer> userLikeThisBook(@RequestHeader("userId") Integer userId, String bookId) {
+        return this.userLikeSeeService.userLikeThisBook(userId, bookId);
     }
 }

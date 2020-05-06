@@ -24,4 +24,12 @@ public interface UserBookshelfService {
      * @return
      */
     Result getUserBookshelf(Integer userId);
+
+    /**
+     * 用户书架是否存在该图书
+     * @param userId
+     * @param bookId
+     * @return
+     */
+    Result userBookshelfExistBook(Integer userId, String bookId);
 }

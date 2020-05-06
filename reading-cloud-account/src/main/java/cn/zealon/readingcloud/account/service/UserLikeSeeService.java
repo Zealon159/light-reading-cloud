@@ -36,4 +36,12 @@ public interface UserLikeSeeService {
      * @return
      */
     Result getUserLikeBookList(Integer userId, Integer page, Integer limit);
+
+    /**
+     * 用户是否喜欢此书
+     * @param userId
+     * @param bookId
+     * @return
+     */
+    Result userLikeThisBook(Integer userId, String bookId);
 }

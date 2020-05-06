@@ -17,6 +17,9 @@ public interface UserLikeSeeMapper {
 
     int insert(UserLikeSee userLikeSee);
 
+    int selectCountByUserAndBookId(@Param("userId") Integer userId,
+                                   @Param("bookId") String bookId);
+
     List<UserLikeSee> findPageWithResult(@Param("userId") Integer userId);
 
     Integer findPageWithCount(@Param("bookId") String bookId);

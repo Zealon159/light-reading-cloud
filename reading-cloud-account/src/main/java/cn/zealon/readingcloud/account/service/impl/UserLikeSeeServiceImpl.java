@@ -100,4 +100,15 @@ public class UserLikeSeeServiceImpl implements UserLikeSeeService {
             return ResultUtil.fail();
         }
     }
+
+    @Override
+    public Result userLikeThisBook(Integer userId, String bookId) {
+        int result = 0;
+        try {
+            result = this.likeSeeMapper.selectCountByUserAndBookId(userId, bookId);
+        } catch (Exception ex){
+            LOGGER.error("查询喜欢此书异常：{}", ex);
+        }
+        return ResultUtil.success(result);
+    }
 }

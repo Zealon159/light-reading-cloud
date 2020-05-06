@@ -52,6 +52,11 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="selectCountByUserAndBookId" resultType="java.lang.Integer">
+        select count(1) from user_bookshelf
+        where user_id=#{userId} and book_id=#{bookId}
+    </select>
+
     <sql id="findPageWithWhere">
         <where> 1=1
             <if test="userId != null" >

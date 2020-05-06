@@ -25,7 +25,7 @@ public class UserBookshelfController {
 
     @ApiOperation(value = "同步书架图书接口", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int")
+        @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int")
     })
     @PostMapping("/sync-book")
     public Result syncUserBookshelf(@RequestHeader("userId") Integer userId, @RequestBody UserBookshelfBO bookshelfBO) {
@@ -34,10 +34,20 @@ public class UserBookshelfController {
 
     @ApiOperation(value = "获取书架图书接口", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int")
+        @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int")
     })
     @GetMapping("/get-books")
     public Result getUserBookshelf(@RequestHeader("userId") Integer userId) {
         return this.bookshelfService.getUserBookshelf(userId);
+    }
+
+    @ApiOperation(value = "用户书架是否存在图书", httpMethod = "GET")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int"),
+        @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
+    })
+    @GetMapping("/user-bookshelf-exist-book")
+    public Result<Integer> userBookshelfExistBook(@RequestHeader("userId") Integer userId, String bookId) {
+        return this.bookshelfService.userBookshelfExistBook(userId, bookId);
     }
 }

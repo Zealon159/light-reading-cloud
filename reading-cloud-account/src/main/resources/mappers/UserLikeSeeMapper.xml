@@ -47,4 +47,9 @@
         where book_id = #{bookId,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectCountByUserAndBookId" resultType="java.lang.Integer">
+        select count(1) from user_like_see
+        where user_id=#{userId} and book_id=#{bookId}
+    </select>
+
 </mapper>
