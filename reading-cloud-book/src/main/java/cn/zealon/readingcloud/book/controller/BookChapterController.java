@@ -1,6 +1,7 @@
 package cn.zealon.readingcloud.book.controller;
 
 import cn.zealon.readingcloud.book.service.BookChapterService;
+import cn.zealon.readingcloud.book.vo.BookChapterReadVO;
 import cn.zealon.readingcloud.common.pojo.book.BookChapter;
 import cn.zealon.readingcloud.common.result.Result;
 import io.swagger.annotations.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 图书章节接口
- * @author: tangyl
+ * @author: zealon
  * @since: 2019/9/25
  */
 @Api(description = "章节查询接口")
@@ -40,5 +41,16 @@ public class BookChapterController {
     @RequestMapping("/getChapterList")
     public Result getBookChapterList(String bookId) {
         return this.bookChapterService.getBookChapterListByBookId(bookId);
+    }
+
+    @ApiOperation(value = "阅读内容" , httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "chapterId", value = "章节ID", dataType = "Integer")
+    })
+    @ApiResponses({@ApiResponse(code = 200, message = "", response = BookChapterReadVO.class)})
+    @RequestMapping("/readChapter")
+    public Result<BookChapterReadVO> readChapter(String bookId, Integer chapterId){
+        return this.bookChapterService.readChapter(bookId, chapterId);
     }
 }

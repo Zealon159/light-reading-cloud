@@ -13,6 +13,21 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     </resultMap>
 
+    <resultMap id="BaseListResultMap" type="cn.zealon.readingcloud.common.pojo.book.BookChapter">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="book_id" jdbcType="INTEGER" property="bookId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="lock_status" jdbcType="BIT" property="lockStatus" />
+        <result column="sort_number" jdbcType="INTEGER" property="sortNumber" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List_L">
+      id, book_id, name,  lock_status, sort_number, creater, create_time, update_time,
+      updater
+    </sql>
+
     <sql id="Base_Column_List">
       id, book_id, name, content, lock_status, sort_number, creater, create_time, update_time,
       updater

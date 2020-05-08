@@ -39,13 +39,16 @@ public class RedisService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * 构造方法初始化操作类
      */
     @PostConstruct
     private void inInit() {
         valueOperations = stringRedisTemplate.opsForValue();
-        hashOperations = stringRedisTemplate.opsForHash();
+        hashOperations = redisTemplate.opsForHash();
         listOperations = stringRedisTemplate.opsForList();
         setOperations = stringRedisTemplate.opsForSet();
         zSetOperations = stringRedisTemplate.opsForZSet();
@@ -377,12 +380,28 @@ public class RedisService {
     /************************************** List处理 End */
 
     /************************************** Hash处理 */
+    /**
+     * 获取Hash filed值
+     * @param key
+     * @param field
+     * @param c
+     * @param <T>
+     * @return
+     */
     public <T> T getHashVal(String key, String field, Class<T> c){
         Object val = this.hashOperations.get(key, field);
         if (val == null) {
             return null;
         }
         return JSONObject.parseObject(val.toString(), c);
+    }
+
+    public <T> T getHashObject(String key, String field, Class<T> c){
+        Object val = this.hashOperations.get(key, field);
+        if (val == null) {
+            return null;
+        }
+        return (T) val;
     }
 
     public <T> List<T> getHashListVal(String key, String field, Class<T> c){
@@ -395,6 +414,11 @@ public class RedisService {
 
     public void setHashValExpire(String key, String field, Object val, Long time){
         this.hashOperations.put(key, field, JSONObject.toJSONString(val));
+        this.setExpire(key, time);
+    }
+
+    public void setHashValsExpire(String key, HashMap val, Long time){
+        this.hashOperations.putAll(key, val);
         this.setExpire(key, time);
     }
 

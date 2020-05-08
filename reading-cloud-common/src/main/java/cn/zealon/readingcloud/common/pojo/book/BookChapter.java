@@ -2,6 +2,7 @@ package cn.zealon.readingcloud.common.pojo.book;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,9 @@ import java.util.Date;
  * @since: 2020/3/18
  */
 @Data
-public class BookChapter {
+public class BookChapter implements Serializable {
+
+    private static final Long serialVersionUID = 1L;
 
     /** 主键ID */
     protected Integer id;

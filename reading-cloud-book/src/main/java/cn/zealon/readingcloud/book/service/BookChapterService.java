@@ -1,5 +1,7 @@
 package cn.zealon.readingcloud.book.service;
 
+import cn.zealon.readingcloud.book.vo.BookChapterReadVO;
+import cn.zealon.readingcloud.common.pojo.book.BookChapter;
 import cn.zealon.readingcloud.common.result.Result;
 
 /**
@@ -21,5 +23,13 @@ public interface BookChapterService {
      * @param chapterId
      * @return
      */
-    Result getChapterById(String bookId, Integer chapterId);
+    Result<BookChapter> getChapterById(String bookId, Integer chapterId);
+
+    /**
+     * 阅读章节
+     * @param bookId
+     * @param chapterId 章节ID(0获取首章节，-1获取末章节)
+     * @return
+     */
+    Result<BookChapterReadVO> readChapter(String bookId, Integer chapterId);
 }

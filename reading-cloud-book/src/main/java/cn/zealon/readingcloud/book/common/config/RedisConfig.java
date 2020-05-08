@@ -26,6 +26,14 @@ import java.time.Duration;
 @Configuration
 public class RedisConfig {
 
+    @Bean
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redis = new RedisTemplate<>();
+        redis.setConnectionFactory(redisConnectionFactory);
+        this.setSerializer(redis);
+        return redis;
+    }
+
     /** 配置Key的生成方式 */
     @Bean
     public KeyGenerator keyGenerator() {

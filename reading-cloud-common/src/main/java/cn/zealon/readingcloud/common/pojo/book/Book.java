@@ -10,6 +10,8 @@ import java.util.Date;
 @Data
 public class Book implements Serializable {
 
+    private static final Long serialVersionUID = 1L;
+
     private Integer id;
 
     /**

@@ -22,6 +22,11 @@ public class RedisBookKey {
         return String.format("book-center:chapter-list-%s",bookId);
     }
 
+    /** 资源中心图书章节节点缓存 */
+    public static final String getBookChapterNodeKey(Integer bookId){
+        return String.format("book-center:chapter-node-%s",bookId);
+    }
+
     /** 图书资源中心feign-client缓存 */
     public static final class BookCenter {
         /** 资源中心图书缓存 */
