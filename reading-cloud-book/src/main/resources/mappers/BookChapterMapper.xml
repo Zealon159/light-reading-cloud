@@ -19,13 +19,10 @@
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="lock_status" jdbcType="BIT" property="lockStatus" />
         <result column="sort_number" jdbcType="INTEGER" property="sortNumber" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List_L">
-      id, book_id, name,  lock_status, sort_number, creater, create_time, update_time,
-      updater
+      id, book_id, name,  lock_status, sort_number
     </sql>
 
     <sql id="Base_Column_List">
@@ -46,9 +43,9 @@
         </where>
     </sql>
 
-    <select id="findPageWithResult" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="findPageWithResult" parameterType="java.lang.Integer" resultMap="BaseListResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List_L" />
         from  book_chapter
         <include refid="findPageWithWhere" />
     </select>
