@@ -46,7 +46,7 @@ public class UserBookshelfController {
         @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int"),
         @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
     })
-    @GetMapping("/user-bookshelf-exist-book")
+    @GetMapping("/exist-book")
     public Result<Integer> userBookshelfExistBook(@RequestHeader("userId") Integer userId, String bookId) {
         return this.bookshelfService.userBookshelfExistBook(userId, bookId);
     }

@@ -40,7 +40,7 @@ public class LikeSeeController {
     @ApiImplicitParams({
         @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
     })
-    @GetMapping("/get-book-likes-count")
+    @GetMapping("/get-count")
     public Result<Integer> getBookLikesCount(String bookId) {
         return this.userLikeSeeService.getBookLikesCount(bookId);
     }
@@ -51,7 +51,7 @@ public class LikeSeeController {
         @ApiImplicitParam(paramType = "query", name = "page", value = "页数", required = true, dataType = "int"),
         @ApiImplicitParam(paramType = "query", name = "limit", value = "每页数量", required = true, dataType = "int")
     })
-    @GetMapping("/get-user-like-books")
+    @GetMapping("/get-books")
     public Result getUserLikeBookList(@RequestHeader("userId") Integer userId, Integer page, Integer limit) {
         return this.userLikeSeeService.getUserLikeBookList(userId, page, limit);
     }
@@ -61,7 +61,7 @@ public class LikeSeeController {
         @ApiImplicitParam(paramType = "header", name = "userId", value = "用户ID", required = true, dataType = "int"),
         @ApiImplicitParam(paramType = "query", name = "bookId", value = "图书ID", required = true, dataType = "String")
     })
-    @GetMapping("/user-like-this-book")
+    @GetMapping("/exist-book")
     public Result<Integer> userLikeThisBook(@RequestHeader("userId") Integer userId, String bookId) {
         return this.userLikeSeeService.userLikeThisBook(userId, bookId);
     }
