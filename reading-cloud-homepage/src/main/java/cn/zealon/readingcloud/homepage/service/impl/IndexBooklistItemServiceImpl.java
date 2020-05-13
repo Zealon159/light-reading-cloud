@@ -191,6 +191,7 @@ public class IndexBooklistItemServiceImpl implements IndexBooklistItemService {
         }
         BooklistBookVO vo = new BooklistBookVO();
         BeanUtils.copyProperties(book, vo);
+        vo.setLikeCount(0);
         // 分类
         String categoryName = BookCategoryEnum.values()[book.getDicCategory() - 1].getName();
         vo.setCategoryName(categoryName);

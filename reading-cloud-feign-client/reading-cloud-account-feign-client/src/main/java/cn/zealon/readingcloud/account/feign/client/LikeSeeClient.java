@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author: zealon
  * @since: 2019/7/4
  */
-@FeignClient(contextId = "book", name = "light-reading-cloud-account", fallbackFactory = LikeSeeClientFallBack.class)
+@FeignClient(contextId = "like", name = "light-reading-cloud-account", fallbackFactory = LikeSeeClientFallBack.class)
 public interface LikeSeeClient {
 
-    @GetMapping("/get-book-likes-count")
+    @GetMapping("/account/like-see/get-count")
     Result<Integer> getBookLikesCount(@RequestParam("bookId") String bookId);
 
 }
