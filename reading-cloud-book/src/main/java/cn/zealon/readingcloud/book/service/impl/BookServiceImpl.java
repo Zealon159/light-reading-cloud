@@ -6,7 +6,7 @@ import cn.zealon.readingcloud.book.vo.BookVO;
 import cn.zealon.readingcloud.common.cache.RedisBookKey;
 import cn.zealon.readingcloud.common.cache.RedisExpire;
 import cn.zealon.readingcloud.common.cache.RedisService;
-import cn.zealon.readingcloud.common.enums.BookCategoryEnum;
+import cn.zealon.readingcloud.common.constant.CategoryConstant;
 import cn.zealon.readingcloud.common.enums.BookSerialStatusEnum;
 import cn.zealon.readingcloud.common.pojo.book.Book;
 import cn.zealon.readingcloud.common.result.Result;
@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
         BookVO vo = new BookVO();
         BeanUtils.copyProperties(book, vo);
         // 分类
-        String categoryName = BookCategoryEnum.values()[book.getDicCategory() - 1].getName();
+        String categoryName = CategoryConstant.categorys.get(book.getDicCategory());
         vo.setCategoryName(categoryName);
         // 连载状态
         String serialStatusName = BookSerialStatusEnum.values()[book.getDicSerialStatus() - 1].getName();
