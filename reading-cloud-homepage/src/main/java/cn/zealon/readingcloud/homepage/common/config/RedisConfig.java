@@ -27,6 +27,14 @@ import java.time.Duration;
 @Configuration
 public class RedisConfig {
 
+    @Bean
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redis = new RedisTemplate<>();
+        redis.setConnectionFactory(redisConnectionFactory);
+        this.setSerializer(redis);
+        return redis;
+    }
+
     /** 配置Key的生成方式 */
     @Bean
     public KeyGenerator keyGenerator() {
@@ -60,15 +68,17 @@ public class RedisConfig {
 
     /** 设置RedisTemplate的序列化方式 */
     public void setSerializer(RedisTemplate redisTemplate) {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         //设置键（key）的序列化方式
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setKeySerializer(stringRedisSerializer);
         //设置值（value）的序列化方式
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
     }
 }
