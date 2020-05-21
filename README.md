@@ -15,6 +15,7 @@
   </a>
 </p>
 
+
 ## 项目介绍
 
 light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实战项目，涉及 SpringCloud-Config、Eureka、OpenFeign、Hystrix、Jwt、SpringCloud-Gateway 等技术栈的应用。
@@ -37,7 +38,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 核心架构图如下：
 
-![](http://q94iswz37.bkt.clouddn.com/frameworks.jpg)
+![](http://reading.zealon.cn/frameworks.jpg)
 
 ### 系统模块
 
@@ -67,7 +68,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 这样拆分的粒度比较适中，其中每个服务相对都比较独立。由于个人精力有限，只实现了最核心的业务：图书、精品页、账户、书架等服务。
 
-从依赖中可以看出，除了common之外，图书中心被依赖的次数最多，由此可见图书中心是最基础的服务，为此需要对这类底层的服务分配更多的容器，具体的还需要根据 `DAU`、`QPS` 等综合衡量，决策更合适的数值。
+从依赖中可以看出，除了common之外，图书中心被依赖的次数最多，由此可见图书中心是最基础的服务，为此需要对这类底层的服务分配更多的容器，具体的还需要根据 `DAU`、`QPS` 等综合衡量，决策更合适的数值，是否要进一步拆分微服务等等。
 
 ## 快速开始
 
@@ -103,15 +104,17 @@ https://www.springcloud.cc/spring-cloud-config.html
 
 工作过程简单来说，首先服务提供者启动时，向注册中心提供自己的服务信息，然后消费者服务要请求某个接口时，不是直接去请求具体的服务地址，而是在注册中心拉取得到要请求的服务地址，最后再通过这个地址、端口信息远程调用服务。大体过程如下图：
 
-![](http://q94iswz37.bkt.clouddn.com/register.jpg)
+![](http://reading.zealon.cn/register.jpg)
 
 当然服务注册与服务发现的过程并不仅仅只有注册和拉取这两个动作，还有一些其他相关的动作。如注册中心存储数据的缓存更新、提供者服务故障处理、消费者心跳检测等等。
 
 > Netflix Eureka 是一款由 Netflix 开源的基于 REST 服务的注册中心，用于提供服务发现功能。Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件的一部分，基于 Netflix Eureka 进行了二次封装，主要负责完成微服务架构中的服务治理功能，能够非常方便的将服务注册到 Spring Cloud Eureka 中进行统一管理。 
+>
+> Eureka 设计架构主要分为 Eureka Server 和 Eureka Client 两部分，Eureka Client 又分为 Applicaton Service 和 Application Client，Applicaton Service 就是服务提供者，Application Client 就是服务消费者。
 
-Eureka 设计架构主要分为 Eureka Server 和 Eureka Client 两部分，Eureka Client 又分为 Applicaton Service 和 Application Client，Applicaton Service 就是服务提供者，Application Client 就是服务消费者。
+所以我们的 reading-cloud-eureka 项目中，使用注解 `@EnableEurekaServer` 来启用 eureka 服务作为注册中心服务。
 
-所以我们的 reading-cloud-eureka 项目中，使用注解 `@EnableEurekaServer` 来启用 eureka 服务作为注册中心服务。而在其他子项目中，使用注解 `@EnableEurekaClient` 来启用 eureka 客户端，使用注册中心的服务。
+而在其他子项目中，使用注解 `@EnableEurekaClient` 来启用 eureka 客户端，使用注册中心的服务。
 
 具体搭建过程参考：https://www.springcloud.cc/spring-cloud-netflix.html
 
@@ -125,7 +128,7 @@ Eureka 设计架构主要分为 Eureka Server 和 Eureka Client 两部分，Eure
 
 图书中心作为基础数据提供图书信息服务，另外就是提供图书详情接口、章节目录、章节阅读等接口了。
 
-####数据表结构
+#### 数据表结构
 
 PS：只列举了关键表和关键字段
 
@@ -133,13 +136,13 @@ PS：只列举了关键表和关键字段
 
 2. 章节表（book_chapter）一对多关系。
 
-![](http://q94iswz37.bkt.clouddn.com/book-center-table.png)
+![](http://reading.zealon.cn/book-center-table.png)
 
-####接口服务
+#### 接口服务
 
 可以看到如下的几个接口，接口描述使用 swagger 实现。
 
-![](http://q94iswz37.bkt.clouddn.com/book-center.jpg)
+![](http://reading.zealon.cn/book-center.jpg)
 
 其中图书查询接口比较简单，看代码很轻易的就能明白，这里重点说明一下章节阅读接口 `book/chapter/readChapter`。
 
@@ -153,7 +156,7 @@ PS：只列举了关键表和关键字段
 
 > Q：为什么非要使用链表存储呢？阅读当前章节的时候同时查询上一章和下一章不是也可以吗？
 >
-> A：没错啊，利用当前章节计算上一章和下一章是可行的，但是这种方式没访问一章都需要进行上下章查询与计算，而通过链表这种方式，只需要第一次生成一次链表，后面每次在链表中读取即可，相比每次计算和一次计算，当然要选择后者啦，而且随着章节越多耗费的性能差距也就越大。
+> A：没错啊，利用当前章节计算上一章和下一章是可行的，但是这种方式每访问一章都需要进行上下章查询与计算，而通过链表这种方式，只需要第一次生成一次链表，后面每次在链表中读取即可，相比每次计算和一次计算，当然要选择后者啦，而且随着章节越多耗费的性能差距也就越大。
 
 按着这个思路，接下来就是要设计具体数据了。我们看一下下边的数据结构，key 代表当前章节ID，value代表上下章关系数据，都有一个 pre 和 next 指向前驱章节和后继章节，这样当请求任意章节时，通过传入的章节ID就直接获得了前后章节信息了。
 
@@ -220,23 +223,47 @@ PS：只列举了关键表和关键字段
 
 大致流程图（蓝色环节只在没有缓存时执行一次）：
 
-![](http://q94iswz37.bkt.clouddn.com/process-chapter-read.jpg)
+![](http://reading.zealon.cn/process-chapter-read.jpg)
 
 其中，没有缓存时，会查询一次数据库，计算整个链表存到缓存，后面再请求时，直接redis的hash返回，不需要再计算前后章节了。
 
-###精品页中心 - reading-cloud-homepage
+### 精品页中心 - reading-cloud-homepage
 
 
 
-####数据表设计
+#### 数据表设计
+
+1. 精品页配置表(index_page_config)
+
+   这个表为精品页推荐、男生、女生的配置总表，根据page_type存储对应的banner或booklist
+
+   page_type=1 即书单，page_type=2 则Banner
+
+2. Banner轮播表(index_banner)
+
+3. Banner轮播明细表(index_banner_item)
+
+4. 书单配置表(index_booklist)
+
+5. 书单配置明细表(index_booklist_item)
+
+![](http://reading.zealon.cn/homepage-db.jpg)
+
+表详细说明可见数据库SQL建表后的注释。
+
+#### 接口服务
+
+主页的接口主要是读为主，如下就那么3个，是不是感觉挺简单的哈。
+
+![](http://reading.zealon.cn/homepage.jpg)
+
+这里主要说明下精品页接口，首先看下精品页的需求：
+
+- 按配置有序加载对应的栏目(也就是Banner或书单)
+- 书单可按类型加载不同的样式
+- 书单可按换一换配置进行随机换一换
 
 
-
-####接口服务
-
-
-
-![](http://q94iswz37.bkt.clouddn.com/homepage.jpg)
 
 ### 账户中心 - reading-cloud-account
 
@@ -248,15 +275,19 @@ PS：只列举了关键表和关键字段
 2. 用户书架表(user_bookshelf)
 3. 用户喜欢看表(user_like_see)
 
-![](http://q94iswz37.bkt.clouddn.com/account-center-table.jpg)
+![](http://reading.zealon.cn/account-center-table.jpg)
 
 #### 接口服务
 
-其中用户服务接口复制登录认证与注册，用户纾解、喜欢看都是用户行为的接口，相比book略多一点。
+其中用户服务接口复制登录认证与注册，用户书架、喜欢看都是用户行为的接口，主要说明下登录接口和书架同步接口
 
-![](http://q94iswz37.bkt.clouddn.com/account-center.jpg)
+![](http://reading.zealon.cn/account-center.jpg)
 
-登录接口
+##### 登录
+
+我们知道
+
+##### 书架同步
 
 ### Feign客户端
 
