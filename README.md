@@ -120,9 +120,29 @@ https://www.springcloud.cc/spring-cloud-config.html
 
 ### 服务网关 - reading-cloud-gateway
 
+API 网关是对外提供服务的一个入口，并且隐藏了内部架构的实现，是微服务架构中必不可少的一个组件。API 网关可以为我们管理大量的 API 接口，负责对接协议适配、安全认证、路由转发、流量限制、日志监控、防止爬虫、等功能。
 
+主流的开源网关有比较早的 Zuul 以及 SpringCloud 自己研发了一个全新的网关 Spring Cloud Gateway。由于 Zuul1 基于 Servlet 构建，使用的是阻塞的 IO，性能并不是很理想。Spring Cloud Gateway 则基于 Spring 5、Spring boot 2 和 Reactor 构建，使用 Netty 作为运行时环境，比较完美的支持异步非阻塞编程。
 
+<center>没使用网关的情况</center>
 
+![](http://reading.zealon.cn/gateway-01.jpg)
+
+<center>使用网关后</center>
+
+![](http://reading.zealon.cn/gateway-02.jpg)
+
+我想，没有网关和使用网关的区别，看见客户端的表情你就明白了其中的奥义了吧（无论服务端多么复杂...）。
+
+项目采用 SpringCloud Gateway 作为网关实现，主要实现了统一认证、动态路由。
+
+SpringCloud Gateway 两大核心，一个是Predicate，路由匹配，一个是Filter，过滤器。
+
+路由匹配的配置方式有 Fluent API 和 yml 两种方式，这里采用 yml 方式。具体见 reading-cloud-gateway 工程里的配置文件。
+
+SpringCloud Gateway 有全局过滤器和局部过滤器之分，对应的接口为 GatewayFilter 和 GlobalFilter。我们统一认证的实现方式是自定义实现全局过滤器，在过滤器里面可以处理白名单放行、认证校验、动态处理请求参数等。位置：`cn.zealon.readingcloud.gateway.filter.AuthFilter`
+
+认证校验过程参考 `账户中心 - reading-cloud-account` 的说明文档，在最下边。
 
 ### 图书中心 - reading-cloud-book
 
@@ -229,7 +249,7 @@ PS：只列举了关键表和关键字段
 
 ### 精品页中心 - reading-cloud-homepage
 
-
+精品页主要提供app首页数据接口，换一换、图书列表接口。所以依赖于图书中心和账户中心。
 
 #### 数据表设计
 
@@ -253,7 +273,7 @@ PS：只列举了关键表和关键字段
 
 #### 接口服务
 
-主页的接口主要是读为主，如下就那么3个，是不是感觉挺简单的哈。
+主页的接口主要是读为主，就那么3个，是不是感觉挺简单的哈。
 
 ![](http://reading.zealon.cn/homepage.jpg)
 
@@ -261,9 +281,25 @@ PS：只列举了关键表和关键字段
 
 - 按配置有序加载对应的栏目(也就是Banner或书单)
 - 书单可按类型加载不同的样式
-- 书单可按换一换配置进行随机换一换
+- 书单可按更多配置项呈现换一换或更多或无
 
+所以分析的大致接口逻辑图如下
 
+![](http://reading.zealon.cn/index-process.jpg)
+
+有了这个结构图，开发功能就清晰多了。
+
+其中获取图书部分内部还有一些细节，随机获取时，每次随机得到的book不能重复，本次随机结果不能与客户端内的图书重复，如果配置数量不够随机的话还不能进行随机等等。想了解细节见代码：`cn.zealon.readingcloud.homepage.service.impl.IndexPageConfigServiceImpl.java` 中 `getIndexPageByType` 函数。
+
+关于获取图书信息，是通过Feign客户端实现的，也就是我们说的微服务之间远程调用，下面是请求链调用的过程
+
+![](http://reading.zealon.cn/index-seq.jpg)
+
+其中精品页服务内部逻辑也就是我们的流程图部分，而调用链的过程使用时序图更为清晰。
+
+:star: 看蓝色文字调用，这两处即我们的微服务之间的调用了，使用的是FeignClient，注意这里的调用返回结果，如果不是要求100%的实时性，一定要加上缓存，不用每次都去远程调用而减少服务提供者的压力。
+
+:star: 是否注意到了，流程图更适合用于业务逻辑；而时序图适合用于调用链，通常每个节点代表了一个端点（即独立的服务或组件）​ 
 
 ### 账户中心 - reading-cloud-account
 
@@ -279,19 +315,41 @@ PS：只列举了关键表和关键字段
 
 #### 接口服务
 
-其中用户服务接口复制登录认证与注册，用户书架、喜欢看都是用户行为的接口，主要说明下登录接口和书架同步接口
+其中用户服务接口复制登录认证与注册，用户书架、喜欢看都是用户行为的接口
 
 ![](http://reading.zealon.cn/account-center.jpg)
 
-##### 登录
+**安全认证**
 
-我们知道
+常用的认证方式主要有三种：Session、HTTP Basic Authentication 和 Token。
 
-##### 书架同步
+- session 是认证中最常用的一种方式，也是最简单的。用户登录后将信息存储在后端，客户端则通过 Cookie 中的 SessionId 来标识对应的用户。
+- HTTP Basic Authentication 也就是 HTTP 基本认证，它是 HTTP 1.0 提出的一种认证机制。HTTP 基本认证的原理是客户端在请求时会在请求头中增加 Authorization，Authorization 是用户名和密码用 Base64 加密后的内容。服务端获取 Authorization Header 中的用户名与密码进行验证。
+- Token 中会存储用户的信息，然后通过加密算法进行加密，只有服务端才能解密，服务端拿到 Token 后进行解密获取用户信息。
 
-### Feign客户端
+相比之下，Token更适用于微服务的安全认证。所以采用了基于Token实现的 JWT作为本项目的安全认证规范。
 
+JWT（JSON Web Token）是一个非常轻巧的规范。这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。在HTTP通信过程中，进行身份认证。
 
+比如在用户登录时，基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息的合法性；如果验证成功，会产生并返回一个 Token，客户端将Token保存起来。
+
+![](http://reading.zealon.cn/jwt-1.jpg)
+
+再次请求服务端时，一般会将 Token 放入请求头中进行传递。当请求到达网关后，会在网关中对 Token 进行校验，如果校验成功，则将该请求转发到后端的服务中，在转发时会将 Token 解析出的用户信息也一并带过去，这样在后端的服务中就不用再解析一遍 Token 获取的用户信息，这个操作统一在网关进行的。如果校验失败，那么就直接返回对应的结果给客户端，不会将请求进行转发。
+
+![](http://reading.zealon.cn/jwt-2.jpg)
+
+:star: ​我们知道，网关是唯一入口，所有一般情况下，微服务之间的请求，就不需要再进行认证了。
+
+:star: 有一些服务是不需要认证的，这时候，我们可以在网关中加白名单进行处理。
+
+:star: 我们知道，jwt认证的过程主要是加密​，然后结果和Token匹配，而加密运算会耗费CPU资源，如果请求量比较大，可以将Token存储缓存，缓存失败再进行实时认证，可以大幅度的提升网关服务器的CPU性能。
+
+## 附录
+
+附录1.在线UML编辑工具：https://app.diagrams.net/
+
+附录2.在线数据表关系编辑工具：https://dbdiagram.io/
 
 ## License
 
