@@ -18,7 +18,7 @@ public class UserUtil {
         // 盐值
         String[] salts = {"sun","moon","star","sky","cloud","fog","rain","wind","rainbow"};
         int hashCode = loginName.hashCode() + 159;
-        int mod = hashCode % 9;
+        int mod = Math.abs( hashCode % 9 );
         return salts[mod];
     }
 
@@ -29,7 +29,7 @@ public class UserUtil {
      * @return
      */
     public static String getUserEncryptPassword(String loginName, String password){
-        String pwdAndSalt = password + UserUtil.getUserSalt(loginName);
+        String pwdAndSalt = password + getUserSalt(loginName);
         return MD5Util.MD5Encode(pwdAndSalt,"utf8");
     }
 

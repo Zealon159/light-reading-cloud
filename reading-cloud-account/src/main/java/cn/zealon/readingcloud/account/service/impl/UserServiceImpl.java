@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setUserPwd(encryptPwd);
         try{
             // 设置默认头像
-            user.setHeadImgUrl("http://q94iswz37.bkt.clouddn.com/default.jpg");
+            user.setHeadImgUrl("http://reading.zealon.cn/default.jpg");
             user.setUuid(CommonUtil.getUUID());
             this.userMapper.insert(user);
         } catch (Exception ex) {
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
             vo.setUser(userVo);
             return ResultUtil.success(vo);
         } catch (Exception ex) {
-            LOGGER.error("注册登录失败了！{}; loginName:{}", ex, loginName);
+            LOGGER.error("登录失败了！{}; loginName:{}", ex, loginName);
             return ResultUtil.fail().buildMessage("登录失败，服务器被吃了＝(#>д<)ﾉ ！请重试。 ");
         }
     }
