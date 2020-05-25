@@ -10,9 +10,9 @@ spring:
   datasource:
     book-center:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/book-ms?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
-      username: root
-      password: 'pass123'
+      url: jdbc:mysql://rm-m5e52b35wx8shto17125010.mysql.rds.aliyuncs.com:3306/reading_cloud_resource?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+      username: reading_cloud
+      password: 'withyou2020'
       initial-size: 5
       min-idle: 5
       max-active: 30
@@ -46,5 +46,4 @@ logging:
         cn.zealon.readingcloud.book.feign.client: debug
 
 from: dev-environment-1.0...
-
-debug: true
+debug: false
