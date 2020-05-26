@@ -93,7 +93,7 @@
         <dependency>
             <groupId>cn.zealon</groupId>
             <artifactId>reading-cloud-common</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- 图书中心feign客户端 -->
@@ -102,7 +102,6 @@
             <artifactId>reading-cloud-book-feign-client</artifactId>
             <version>1.0.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -111,7 +110,23 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- 编译插件，指定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
 </project>
