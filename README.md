@@ -22,7 +22,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 项目的侧重点主要是基于实际业务场景使用微服务架构落地的思路，会采用图文的方式介绍每个服务或接口的原理以及为什么使用这种方式实现，希望会对想入门微服务的同学有所帮助。
 
-客户端采用 Vue.js 、Vuetify  开发：[点击进入仓库](https://github.com/Zealon159/book-ms-ui)
+客户端采用 Vue.js 、Vuetify  开发：[点击进入仓库](https://github.com/Zealon159/light-reading-cloud-client)
 
 ### 演示
 
@@ -76,7 +76,19 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 ## 快速开始
 
+### step1 - 创建数据库
 
+导入数据库脚本，分别创建数据库 `reading_cloud_resource`、`reading_cloud_account`，然后导入建表脚本。
+
+需要示例数据的话，可以到阿里云数据库导出数据哈，在上面有数据库连接信息。
+
+### step2 - 配置文件
+
+由于我的服务器内存不够用了，就没搭建配置中心，可以直接修改每个工程的 `bootstrap.yml` 文件，更新数据库信息、redis配置信息等。
+
+### step3 - 启动程序
+
+首先启动注册中心，然后依次启动图书中心、账户中心、精品页中心、服务网关，可以在配置文件中自行修改端口哈。
 
 ## 指南
 
