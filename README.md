@@ -26,7 +26,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 ### 演示
 
-演示地址：[http://reading-cloud.zealon.cn/#/index](http://reading-cloud.zealon.cn/#/index)
+演示地址：[http://reading-cloud.zealon.cn/#/index](http://reading-cloud.zealon.cn/#/index) ，`手机访问效果佳 ^_^`
 
 数据库地址：`rm-m5e52b35wx8shto17mo.mysql.rds.aliyuncs.com` ，端口 `3306`
 
