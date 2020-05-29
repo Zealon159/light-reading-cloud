@@ -18,7 +18,7 @@
 
 ## 项目介绍
 
-light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实战项目，涉及 SpringCloud-Config、Eureka、OpenFeign、Hystrix、Jwt、SpringCloud-Gateway 等技术栈的应用。
+light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实战项目，涉及 SpringCloud-Config、Eureka、OpenFeign、Hystrix、Jwt、SpringCloud-Gateway、ElasticSearch 等技术栈的应用。
 
 项目的侧重点主要是基于实际业务场景使用微服务架构落地的思路，会采用图文的方式介绍每个服务或接口的原理以及为什么使用这种方式实现，希望会对想入门微服务的同学有所帮助。
 
