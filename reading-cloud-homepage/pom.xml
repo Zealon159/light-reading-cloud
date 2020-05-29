@@ -78,6 +78,13 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!-- ES客户端 -->
+        <dependency>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>6.3.1</version>
+        </dependency>
+
         <!-- 内部包 -->
         <dependency>
             <groupId>cn.zealon</groupId>

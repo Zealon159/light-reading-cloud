@@ -293,6 +293,25 @@ CREATE TABLE `book_chapter` (
   UNIQUE KEY `uk_index` (`book_id`,`sort_number`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3809 DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `hot_search_word` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `frequency` int(11) NOT NULL COMMENT '搜索频次',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='热搜词配置';
+
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(1, 999, '美女', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(5, 555, '极品', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(7, 321, '最强天才', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(4, 142, '仙女逆袭记', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(6, 87, '屌丝', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(3, 62, '武魂', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+INSERT INTO reading_cloud_resource.hot_search_word (id, frequency, name, create_time, update_time) VALUES(2, 15, '寂寞', '2020-05-29 18:29:04.0', '2020-05-29 18:29:04.0');
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

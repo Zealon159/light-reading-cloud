@@ -35,10 +35,35 @@ spring:
           uri: lb://light-reading-cloud-homepage
           predicates:
             - Path=/index/**
+          filters:
+            # 降级配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.burstCapacity: 5
+                key-resolver: "#{@ipKeyResolver}"
+
         - id: account-center-rpc
           uri: lb://light-reading-cloud-account
           predicates:
             - Path=/account/**
+          filters:
+            # 降级配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 3
+                redis-rate-limiter.burstCapacity: 5
+                key-resolver: "#{@ipKeyResolver}"
 
 eureka:
   instance:

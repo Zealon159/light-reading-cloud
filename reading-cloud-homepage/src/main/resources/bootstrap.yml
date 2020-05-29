@@ -21,6 +21,12 @@ spring:
       validation-query: 'select 1 from dual'
       connect-timeout: 1500
 
+#---- ElasticSearch 配置  ----#
+es:
+  indexType: book
+  aliasName: books
+  servers: http://47.104.241.41:9200
+
 eureka:
   client:
     service-url:
