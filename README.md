@@ -16,7 +16,6 @@
 </p>
 
 
-
 ## 项目介绍
 
 light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实战项目，涉及 SpringCloud-Config、Eureka、OpenFeign、Hystrix、Jwt、SpringCloud-Gateway、ElasticSearch 等技术栈的应用。
@@ -32,6 +31,12 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 数据库地址：`47.104.241.41` ，端口 `3306`
 
 数据库账户：`hello_developer` ，密码：`Bestyou2020.com`
+
+图书服务接口：http://reading-cloud.zealon.cn:8001/swagger-ui.html
+
+精品页接口：http://reading-cloud.zealon.cn:8002/swagger-ui.html
+
+账户中心接口：http://reading-cloud.zealon.cn:8003/swagger-ui.html
 
 部分截图：
 
