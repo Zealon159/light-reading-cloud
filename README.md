@@ -1,4 +1,4 @@
-<h1 align="center"> 轻松阅读 - API </h1>
+<h1 align="center"> 轻松阅读 - API - 2.0 </h1>
 
 <p align="center">
   <a href="https://github.com/spring-cloud">
@@ -18,11 +18,17 @@
 
 ## 项目介绍
 
-light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实战项目，涉及 SpringCloud-Config、Eureka、OpenFeign、Hystrix、Jwt、SpringCloud-Gateway、ElasticSearch 等技术栈的应用。
+light reading cloud（轻松阅读）是一款图书阅读类APP，基于 SpringCloud 生态开发的微服务实践项目，涉及 SpringCloud-Gateway、Nacos、Hystrix、OpenFeign、Jwt、ElasticSearch 等技术栈的应用。
 
 项目的侧重点主要是基于实际业务场景使用微服务架构落地的思路，会采用图文的方式介绍每个服务或接口的原理以及为什么使用这种方式实现，希望会对想入门微服务的同学有所帮助。
 
 客户端采用 Vue.js 、Vuetify  开发：[点击进入仓库](https://github.com/Zealon159/light-reading-cloud-client)
+
+### 版本
+
+ `2.0` 版本，主要更新了 SpringCloud Alibaba 的 Nacos 组件，替代了 SpringCloud Config 以及 Eureka 
+
+ `1.0` 版本，采用 SpringCloud Config、Eureka 为配置中心、注册中心。获取此版本，请查看 `reading-1.0` 分支的说明，并 `Checkout` 此分支 
 
 ### 演示
 
@@ -48,7 +54,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 核心架构图如下：
 
-![](http://reading.zealon.cn/frameworks.jpg)
+![](http://reading.zealon.cn/framework-2.png)
 
 ### 系统模块
 
@@ -68,13 +74,11 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 | No   | 工程模块                   | 说明                                     | 依赖    |
 | ---- | -------------------------- | ---------------------------------------- | ------- |
 | 1    | reading-cloud-common       | 公共模块，存放通用的POJO、工具类等文件。 | -       |
-| 2    | reading-cloud-config       | 配置中心，存储每个微服务的配置           | -       |
-| 3    | reading-cloud-eureka       | 注册中心，服务发现与注册                 | -       |
-| 4    | reading-cloud-gateway      | 服务网关，流量入口、权限验证等           | -       |
-| 5    | reading-cloud-book         | 图书中心，提供图书基础数据接口           | 1       |
-| 6    | reading-cloud-account      | 账户中心，提供账户授权、用户服务等接口   | 1、5    |
-| 7    | reading-cloud-homepage     | 精品页中心，提供App精品页接口            | 1、5、6 |
-| 8    | reading-cloud-feign-client | Feign客户端，提供微服务的公用客户端      | 1       |
+| 2    | reading-cloud-gateway      | 服务网关，流量入口、权限验证等           | -       |
+| 3    | reading-cloud-book         | 图书中心，提供图书基础数据接口           | 1       |
+| 4    | reading-cloud-account      | 账户中心，提供账户授权、用户服务等接口   | 1、3    |
+| 5    | reading-cloud-homepage     | 精品页中心，提供App精品页接口            | 1、3、4 |
+| 6    | reading-cloud-feign-client | Feign客户端，提供微服务的公用客户端      | 1       |
 
 这样拆分的粒度比较适中，其中每个服务相对都比较独立。由于个人精力有限，只实现了最核心的业务：图书、精品页、账户、书架等服务。
 
@@ -108,19 +112,17 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 相当于单体项目里的 common 包独立出来，实现同等的价值，这样不需要每个微服务项目冗余公共代码资源，需要注意只存放公共代码，从而得到更好的抽离和复用。
 
-### 配置中心 - reading-cloud-config
+### 配置中心/注册中心 - Alibaba-Nacos
+
+#### 配置中心
 
 从上面的架构图中我们可以得知，几乎所有的工程都要从配置中心获取配置信息。其目的是用来统一管理配置，配置中心可以在微服务等场景下极大地减轻配置管理的工作量，增强配置管理的服务能力。
 
 > 单体项目的时候，我们把配置信息放到 `.yml` 或 `.properties` 文件中，随着项目走的，一个项目可能有几个配置文件。当请求量随着增大，项目可能要部署多个节点了，这时候维护起来会越来越麻烦，也容易出错。发布的工作降低了整体的工作效率，为了能够提升工作效率，配置中心应运而生了，我们可以将配置统一存放在配置中心来进行管理。
 
-目前主流的配置中心有 Apollo、SpringCloud-Config、Nacos 等开源产品，每款配置中心都能满足统一管理配置的需求，SpringCloud 体系中自带的配置中心是 SpringCloud-Config，所以就地安排了，后面会升级到 Nacos，因为它除了可以做配置中心，还可以做服务注册发现，可以替代 Eureka 和 SpringCloud-Config 两个产品。
+目前主流的配置中心有 Apollo、SpringCloud-Config、Nacos 等开源产品，每款配置中心都能满足统一管理配置的需求，本项目的1.0版本中使用 SpringCloud-Config 作为配置中心、Eureka为注册中心，2.0使用了 Nacos，因为它除了可以做配置中心，还可以做服务注册发现，替代了 Eureka 和 SpringCloud-Config 两个产品。
 
-SpringCloud-Config 支持动态获取Git、SVN、本地的配置文件，本项目采用Git的方式，具体搭建过程可参考：
-
-https://www.springcloud.cc/spring-cloud-config.html
-
-### 注册中心 - reading-cloud-eureka
+#### 注册中心
 
 注册中心，是一个独立的服务组件，核心功能是服务治理，集中存储、监控、我们的服务信息。
 
@@ -129,16 +131,6 @@ https://www.springcloud.cc/spring-cloud-config.html
 ![](http://reading.zealon.cn/register.jpg)
 
 当然服务注册与服务发现的过程并不仅仅只有注册和拉取这两个动作，还有一些其他相关的动作。如注册中心存储数据的缓存更新、提供者服务故障处理、消费者心跳检测等等。
-
-> Netflix Eureka 是一款由 Netflix 开源的基于 REST 服务的注册中心，用于提供服务发现功能。Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件的一部分，基于 Netflix Eureka 进行了二次封装，主要负责完成微服务架构中的服务治理功能，能够非常方便的将服务注册到 Spring Cloud Eureka 中进行统一管理。 
->
-> Eureka 设计架构主要分为 Eureka Server 和 Eureka Client 两部分，Eureka Client 又分为 Applicaton Service 和 Application Client，Applicaton Service 就是服务提供者，Application Client 就是服务消费者。
-
-所以我们的 reading-cloud-eureka 项目中，使用注解 `@EnableEurekaServer` 来启用 eureka 服务作为注册中心服务。
-
-而在其他子项目中，使用注解 `@EnableEurekaClient` 来启用 eureka 客户端，使用注册中心的服务。
-
-具体搭建过程参考：https://www.springcloud.cc/spring-cloud-netflix.html
 
 ### 服务网关 - reading-cloud-gateway
 
@@ -165,6 +157,8 @@ SpringCloud Gateway 两大核心，一个是Predicate，路由匹配，一个是
 SpringCloud Gateway 有全局过滤器和局部过滤器之分，对应的接口为 GatewayFilter 和 GlobalFilter。我们统一认证的实现方式是自定义实现全局过滤器，在过滤器里面可以处理白名单放行、认证校验、动态处理请求参数等。位置：`cn.zealon.readingcloud.gateway.filter.AuthFilter`
 
 认证校验过程参考 `账户中心 - reading-cloud-account` 的说明文档，在最下边。
+
+其白名单配置在Nacos中，可通过动态配置进行更新。
 
 ### 图书中心 - reading-cloud-book
 
