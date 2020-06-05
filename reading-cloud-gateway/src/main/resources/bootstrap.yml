@@ -1,85 +1,19 @@
-server:
-  port: 8010
-
 spring:
   application:
     # 服务逻辑名称
     name: light-reading-cloud-gateway
+
   cloud:
-    gateway:
+    nacos:
+      # 配置中心
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        refresh: true
+        shared-dataids: light-reading-cloud-gateway.yml
+        namespace: 4d109a4d-f34d-4e86-9e39-c2d36db24b00
+
+      # 注册中心
       discovery:
-        locator:
-          enabled: true
-          lowerCaseServiceId: true
-      routes:
-        - id: book-center-rpc
-          uri: lb://light-reading-cloud-book
-          predicates:
-            - Path=/book/**
-            - Method=GET
-          filters:
-            # 降级配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
-            # 限流配置
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 3 # 每秒允许处理的请求数量
-                redis-rate-limiter.burstCapacity: 5 # 每秒最大处理的请求数量
-                key-resolver: "#{@ipKeyResolver}" # 限流策略，对应策略的Bean
-
-
-        - id: homepage-rpc
-          uri: lb://light-reading-cloud-homepage
-          predicates:
-            - Path=/index/**
-          filters:
-            # 降级配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
-            # 限流配置
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 3
-                redis-rate-limiter.burstCapacity: 5
-                key-resolver: "#{@ipKeyResolver}"
-
-        - id: account-center-rpc
-          uri: lb://light-reading-cloud-account
-          predicates:
-            - Path=/account/**
-          filters:
-            # 降级配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback
-            # 限流配置
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 3
-                redis-rate-limiter.burstCapacity: 5
-                key-resolver: "#{@ipKeyResolver}"
-
-eureka:
-  instance:
-    # 注册服务的IP，而不是逻辑名称
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://localhost:1001/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-
-hystrix:
-  threadpool:
-    default:
-      coreSize: 20 #并发执行的最大线程数，默认10
-      maxQueueSize: 1000 #BlockingQueue的最大队列数，默认值-1
-      queueSizeRejectionThreshold: 400
-
-
+        server-addr: 127.0.0.1:8848
+        namespace: 4d109a4d-f34d-4e86-9e39-c2d36db24b00

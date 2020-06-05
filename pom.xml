@@ -21,8 +21,6 @@
         <module>reading-cloud-book</module>
         <module>reading-cloud-account</module>
         <module>reading-cloud-common</module>
-        <module>reading-cloud-config</module>
-        <module>reading-cloud-eureka</module>
         <module>reading-cloud-feign-client</module>
         <module>reading-cloud-gateway</module>
         <module>reading-cloud-homepage</module>

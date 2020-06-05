@@ -3,8 +3,10 @@ package cn.zealon.readingcloud.gateway.filter;
 import cn.zealon.readingcloud.common.pojo.account.User;
 import cn.zealon.readingcloud.common.result.HttpCodeEnum;
 import cn.zealon.readingcloud.common.result.Result;
+import cn.zealon.readingcloud.gateway.common.config.SystemPropertiesConfig;
 import cn.zealon.readingcloud.gateway.common.utils.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -15,6 +17,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
@@ -31,16 +34,21 @@ import java.util.regex.Pattern;
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
+    @Autowired
+    private SystemPropertiesConfig systemPropertiesConfig;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        // 白名单Path
         Set<String> whiteList = this.getWhiteList();
         String path = exchange.getRequest().getPath().toString();
+
+        // 主页接口、图书接口正则匹配
         boolean indexMatch = Pattern.matches("/index[^\\s]*", path);
         boolean bookMatch = Pattern.matches("/book/[^\\s]*", path);
-        String loginUri = "/account/user/login";
-        String registerUri = "/account/user/register";
-        if (bookMatch || indexMatch || path.equals(loginUri) || path.equals(registerUri)) {
-            // 开放接口、登录、注册接口放行
+
+        // 白名单接口、开放接口放行
+        if (bookMatch || indexMatch || whiteList.contains(path)) {
             return chain.filter(exchange);
         }
 
@@ -83,13 +91,19 @@ public class AuthFilter implements GlobalFilter, Ordered {
     }
 
     /**
-     * 白名单
+     * 请求白名单
      * @return
      */
     private Set<String> getWhiteList(){
+        String whitelists = this.systemPropertiesConfig.getWhitelist();
+        if (StringUtils.isEmpty(whitelists)) {
+            return new HashSet<>();
+        }
         Set<String> whiteList = new HashSet<>();
-        whiteList.add("homepage");
-        whiteList.add("book");
+        String[] whiteArray = whitelists.split(",");
+        for (int i = 0; i < whiteArray.length; i++) {
+            whiteList.add(whiteArray[i]);
+        }
         return whiteList;
     }
 }

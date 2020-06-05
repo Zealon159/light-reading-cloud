@@ -1,58 +1,19 @@
-server:
-  port: 8003
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
-
 spring:
+  # 服务逻辑名称
   application:
     name: light-reading-cloud-account
-  # 数据源配置
-  datasource:
-    account-center:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/reading_cloud_account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
-      username: root
-      password: 'pass123'
-      initial-size: 5
-      min-idle: 5
-      max-active: 30
-      max-wait: 6000
-      test-while-idle: true
-      validation-query: 'select 1 from dual'
-      connect-timeout: 1500
 
-  # 线程池配置
-  thread-pool:
-    # 公用线程池
-    common:
-      corePoolSize: 1
-      maximumPoolSize: 5
-      keepAliveTime: 0
-      queueCapacity: 20480
-    # 书架线程池
-    bookshelf:
-      corePoolSize: 1
-      maximumPoolSize: 3
-      keepAliveTime: 0
-      queueCapacity: 10240
+  cloud:
+    nacos:
+      # 配置中心
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        refresh: true
+        shared-dataids: light-reading-cloud-account.yml
+        namespace: 4d109a4d-f34d-4e86-9e39-c2d36db24b00
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:1001/eureka/
-
-feign:
-  okhttp:
-    enabled: true
-  hystrix:
-    enabled: true
-  compression:
-    request:
-      enabled: true
-      mime-type: text/html,application/xml,application/json
-      min-request-size: 1024
-    response:
-      enabled: true
-
-from: dev-environment-1.0...
+      # 注册中心
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 4d109a4d-f34d-4e86-9e39-c2d36db24b00
