@@ -54,7 +54,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 核心架构图如下：
 
-![](http://reading.zealon.cn/framework-2.png)
+![](http://reading.zealon.cn/framework.png)
 
 ### 系统模块
 
