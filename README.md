@@ -38,11 +38,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 数据库账户：`hello_developer` ，密码：`Bestyou2020.com`
 
-图书服务接口：http://reading-cloud.zealon.cn:8001/swagger-ui.html
-
-精品页接口：http://reading-cloud.zealon.cn:8002/swagger-ui.html
-
-账户中心接口：http://reading-cloud.zealon.cn:8003/swagger-ui.html
+Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上
 
 部分截图：
 
