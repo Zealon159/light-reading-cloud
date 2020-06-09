@@ -46,7 +46,7 @@ Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上
 
 ### 架构图
 
-客户端访问接口由统一流量入口 SpringCloud-Gateway 接收请求、响应结果，网关与微服务基于异步IO Netty通信，微服务获取配置文件启动后通过Eureka完成服务注册与发现，微服务之间的相互调用基于http协议的 FeignClient客户端。
+客户端访问接口由统一流量入口 SpringCloud-Gateway 接收请求、响应结果，网关与微服务基于异步IO Netty通信，微服务获取配置文件启动后通过 Nacos 完成服务注册与发现，微服务之间的相互调用基于http协议的 FeignClient客户端。
 
 核心架构图如下：
 
