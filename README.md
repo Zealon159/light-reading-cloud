@@ -38,7 +38,7 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 数据库账户：`hello_developer` ，密码：`Bestyou2020.com`
 
-Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上
+Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上，配置文件不要删改哈，感谢支持！
 
 部分截图：
 
