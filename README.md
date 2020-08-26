@@ -38,7 +38,11 @@ light reading cloud（轻松阅读）是一款图书阅读类APP，基于 Spring
 
 数据库账户：`hello_developer` ，密码：`Bestyou2020.com`
 
-Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上，配置文件不要删改哈，感谢支持！
+Nacos地址：`http://reading-cloud.zealon.cn:8848/nacos/`，账户密码同上
+
+由于云服务器单机部署，可能内存不足导致Nacos宕机而看不见配置文件，这里专门把配置文件放置在 `bootstrap-config` 目录下，使用静态配置文件方式启动项目（手动更换各个项目对应的配置文件）。
+
+或者切换到 `reading-1.0` 分支，该分支使用了eureka 实现的注册中心。
 
 部分截图：
 
