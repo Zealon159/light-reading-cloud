@@ -34,7 +34,7 @@
         <druid.version>1.1.10</druid.version>
         <lombok.version>1.18.10</lombok.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <mybatis.version>3.4.6</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
     </properties>
 
     <dependencies>
